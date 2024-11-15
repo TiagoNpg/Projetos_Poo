@@ -3,6 +3,7 @@ package pt.iscte.poo.game;
 import objects.Manel;
 import objects.Wall;
 import pt.iscte.poo.gui.ImageGUI;
+import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class Room {
@@ -17,8 +18,8 @@ public class Room {
 
 	}
 
-	public void moveManel() {
-		manel.move();
+	public void moveManel(Direction d) {
+		manel.move(d);
 	}
 	
 }

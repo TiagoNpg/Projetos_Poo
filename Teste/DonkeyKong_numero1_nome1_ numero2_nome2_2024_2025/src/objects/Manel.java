@@ -1,5 +1,6 @@
 package objects;
 
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
@@ -28,8 +29,11 @@ public class Manel implements ImageTile {
 		return 1;
 	}
 
-	public void move() {
-		position = position.plus(Direction.random().asVector());	
+	public void move(Direction d) {
+		Point2D nextPos = position.plus(d.asVector());
+		if(nextPos.getX() < 0 || nextPos.getY() < 0 || nextPos.getY() >= 10 || nextPos.getX() >= 10)
+			return;
+		position = nextPos;
 	}
 	
 }
