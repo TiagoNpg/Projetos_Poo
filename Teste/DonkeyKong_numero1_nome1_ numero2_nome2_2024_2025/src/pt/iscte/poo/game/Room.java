@@ -1,13 +1,6 @@
 package pt.iscte.poo.game;
 
-import objects.Manel;
-import objects.Wall;
-import objects.Gorilla;
-import objects.Stairs;
-import objects.Floor;
-import objects.Door;
-import objects.Trap;
-import objects.Sword;
+import objects.*;
 
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
@@ -16,10 +9,13 @@ import pt.iscte.poo.utils.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Room {
 	private String nextRoomFile; // Nome do próximo ficheiro de sala
 	private Manel manel;        // Referência ao jogador
+
 
 	public Room(String fileName) {
 		loadRoom(fileName); // Carrega e desenha a sala inicial
@@ -57,26 +53,32 @@ public class Room {
 					// Criação dinâmica dos objetos com base nos símbolos
 					switch (symbol) {
 						case 'W': // Wall
-							ImageGUI.getInstance().addImage(new Wall(position));
+							Wall wall = new Wall(position);
+							ImageGUI.getInstance().addImage(wall);
 							break;
 						case 'S': // Stairs
-							ImageGUI.getInstance().addImage(new Stairs(position));
+							Stairs stairs = new Stairs(position);
+							ImageGUI.getInstance().addImage(stairs);
 							break;
 						case 'G': // Gorilla
-							ImageGUI.getInstance().addImage(new Gorilla(position));
+							Gorilla gorilla= new Gorilla(position);
+							ImageGUI.getInstance().addImage(gorilla);
 							break;
 						case 'H': // Hero (Manel)
 							manel = new Manel(position);
 							ImageGUI.getInstance().addImage(manel);
 							break;
 						case '0': // Porta para o próximo nível
-							ImageGUI.getInstance().addImage(new Door(position)); // Cria a porta fechada
+							Door door = new Door(position);
+							ImageGUI.getInstance().addImage(door); // Cria a porta fechada
 							break;
 						case 't': // Trap
-							ImageGUI.getInstance().addImage(new Trap(position)); // Cria uma armadilha
+							Trap trap = new Trap(position);
+							ImageGUI.getInstance().addImage(trap); // Cria uma armadilha
 							break;
 						case 's': // Sword
-							ImageGUI.getInstance().addImage(new Sword(position)); // Cria uma espada
+							Sword sword = new Sword(position);
+							ImageGUI.getInstance().addImage(sword); // Cria uma espada
 							break;
 						default:
 							// Outros símbolos ignorados ou não definidos
@@ -95,7 +97,7 @@ public class Room {
 	}
 
 	public void moveManel(Direction direction) {
-		if (manel != null) {
+		if (manel!=null){
 			manel.move(direction);
 			ImageGUI.getInstance().update();
 		}
