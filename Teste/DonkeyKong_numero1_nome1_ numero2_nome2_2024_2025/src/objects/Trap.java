@@ -4,7 +4,7 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Trap extends Structure {
 
-    public Trap(String name,Point2D position, int layer, int climbable) {
+    public Trap(Point2D position) {
         super("Trap", position, 2, false); //
     }
 }

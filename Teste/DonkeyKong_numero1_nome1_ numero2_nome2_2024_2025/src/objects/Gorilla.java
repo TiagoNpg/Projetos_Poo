@@ -2,8 +2,8 @@ package objects;
 
 import pt.iscte.poo.utils.Point2D;
 
-public class Gorilla extends GameObject {
+public class Gorilla extends Personagens {
     public Gorilla(Point2D position) {
-        super("DonkeyKong", position, 1, false);
+        super("DonkeyKong", position, 1);
     }
 }
