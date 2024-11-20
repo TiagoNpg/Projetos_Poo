@@ -5,13 +5,26 @@ import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
 import pt.iscte.poo.utils.Direction;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.io.File;
+
 public class GameEngine implements Observer {
 
-	private Room currentRoom = new Room("rooms/room0.txt");
+	private static GameEngine INSTANCE;
 	private int lastTickProcessed = 0;
+	private List<Room> rooms = new ArrayList<>();
+	private Room currentRoom = new Room("rooms/room0.txt");
 
-	public GameEngine() {
+
+	private GameEngine() {
 		ImageGUI.getInstance().update();
+	}
+
+	public static GameEngine getInstance() {
+		if (INSTANCE == null)
+			INSTANCE = new GameEngine();
+		return INSTANCE;
 	}
 
 	@Override
@@ -38,6 +51,7 @@ public class GameEngine implements Observer {
 		lastTickProcessed++;
 	}
 
-
-
+	public Room getRooms() {
+		return currentRoom;
+	}
 }

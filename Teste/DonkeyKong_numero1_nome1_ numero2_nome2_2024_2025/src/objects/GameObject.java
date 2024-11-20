@@ -7,12 +7,17 @@ public abstract class GameObject implements ImageTile {
     private String name;
     private Point2D position;
     private int layer;
+    private boolean solid;
 
-
-    public GameObject(String name, Point2D position, int layer) {
+    public GameObject(String name, Point2D position, int layer, boolean solid) {
         this.name = name;
         this.position = position;
         this.layer = layer;
+        this.solid = solid;
+    }
+
+    public boolean isSolid() {
+        return solid;
     }
 
     @Override

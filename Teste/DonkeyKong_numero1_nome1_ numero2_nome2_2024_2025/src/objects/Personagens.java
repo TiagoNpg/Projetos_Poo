@@ -4,13 +4,13 @@ import pt.iscte.poo.utils.Point2D;
 
 public abstract class Personagens extends GameObject implements Colision{
 
-    public Personagens(String name, Point2D position, int layer) {
-        super(name, position, layer);
+    public Personagens(String name, Point2D position, int layer, boolean solid) {
+        super(name, position, layer,solid);
     }
 
     @Override
     public boolean interactionStructure(Structure s1) {
-        return s1.isClimbable();
+        return s1.isSolid();
     }
 
     @Override

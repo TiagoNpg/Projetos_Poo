@@ -10,12 +10,16 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class Room {
+	private static final int roomWidth = 10;
+	private static final int roomHeight = 10;
 	private String nextRoomFile; // Nome do próximo ficheiro de sala
 	private Manel manel;        // Referência ao jogador
-
+	private List<GameObject> gameObjects = new ArrayList<>();
 
 	public Room(String fileName) {
 		loadRoom(fileName); // Carrega e desenha a sala inicial
@@ -30,10 +34,6 @@ public class Room {
 
 			// Limpa a interface gráfica para o novo nível
 			ImageGUI.getInstance().clearImages();
-
-			// Define o tamanho da sala (10x10)
-			int roomWidth = 10;
-			int roomHeight = 10;
 
 			// Preenche a sala inteira com Floor por padrão
 			for (int y = 0; y < roomHeight; y++) {
@@ -55,33 +55,43 @@ public class Room {
 						case 'W': // Wall
 							Wall wall = new Wall(position);
 							ImageGUI.getInstance().addImage(wall);
+							gameObjects.add(wall);
 							break;
 						case 'S': // Stairs
 							Stairs stairs = new Stairs(position);
 							ImageGUI.getInstance().addImage(stairs);
+							gameObjects.add(stairs);
 							break;
 						case 'G': // Gorilla
 							Gorilla gorilla= new Gorilla(position);
 							ImageGUI.getInstance().addImage(gorilla);
+							gameObjects.add(gorilla);
 							break;
 						case 'H': // Hero (Manel)
 							manel = new Manel(position);
 							ImageGUI.getInstance().addImage(manel);
+							gameObjects.add(manel);
 							break;
 						case '0': // Porta para o próximo nível
 							Door door = new Door(position);
 							ImageGUI.getInstance().addImage(door); // Cria a porta fechada
+							gameObjects.add(door);
 							break;
 						case 't': // Trap
 							Trap trap = new Trap(position);
 							ImageGUI.getInstance().addImage(trap); // Cria uma armadilha
+							gameObjects.add(trap);
 							break;
 						case 's': // Sword
 							Sword sword = new Sword(position);
 							ImageGUI.getInstance().addImage(sword); // Cria uma espada
+							gameObjects.add(sword);
+							break;
+						case ' '://Floor
+							Floor floor = new Floor(position);
+							gameObjects.add(floor);
 							break;
 						default:
-							// Outros símbolos ignorados ou não definidos
 							break;
 					}
 				}
@@ -107,6 +117,10 @@ public class Room {
 		if (nextRoomFile != null) {
 			loadRoom(nextRoomFile); // Carrega a próxima sala
 		}
+	}
+
+	public GameObject getObject (Point2D point){
+		return gameObjects.get(point.getY() * 10 + point.getX());
 	}
 }
 
