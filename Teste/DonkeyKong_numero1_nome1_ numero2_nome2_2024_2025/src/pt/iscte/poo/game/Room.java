@@ -19,13 +19,14 @@ public class Room {
 	private static final int roomHeight = 10;
 	private String nextRoomFile; // Nome do próximo ficheiro de sala
 	private Manel manel;        // Referência ao jogador
+	private Gorilla gorilla;	//gorilla
 	private List<GameObject> gameObjects = new ArrayList<>();
 
 	public Room(String fileName) {
 		loadRoom(fileName); // Carrega e desenha a sala inicial
 	}
 
-	private void loadRoom(String fileName) {
+	public void loadRoom(String fileName) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 			// Lê a primeira linha: Número da sala e próximo ficheiro
 			String[] firstLine = reader.readLine().split(";");
@@ -63,7 +64,7 @@ public class Room {
 							gameObjects.add(stairs);
 							break;
 						case 'G': // Gorilla
-							Gorilla gorilla= new Gorilla(position);
+							gorilla= new Gorilla(position);
 							ImageGUI.getInstance().addImage(gorilla);
 							gameObjects.add(gorilla);
 							break;
@@ -108,7 +109,14 @@ public class Room {
 
 	public void moveManel(Direction direction) {
 		if (manel!=null){
-			manel.move(direction);
+			manel.moveManel(direction);
+			ImageGUI.getInstance().update();
+		}
+	}
+
+	public void moveGorilla() {
+		if (gorilla!=null){
+			gorilla.moveGorilla();
 			ImageGUI.getInstance().update();
 		}
 	}
@@ -119,8 +127,12 @@ public class Room {
 		}
 	}
 
-	public GameObject getObject (Point2D point){
-		return gameObjects.get(point.getY() * 10 + point.getX());
+	public GameObject getObject (Point2D point) {
+		for(GameObject go : gameObjects){
+			if(go.getPosition().equals(point))
+				return go;
+		}
+		return null;
 	}
 }
 

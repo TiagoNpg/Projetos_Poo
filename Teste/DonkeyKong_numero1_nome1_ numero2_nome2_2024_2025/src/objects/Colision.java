@@ -1,12 +1,8 @@
 package objects;
 
-import pt.iscte.poo.utils.Point2D;
+public interface Colision { //Definir em cada objeto oq acontece com a interação do objeto
 
-public interface Colision {
-
-    boolean interactionStructure(Structure s1);
-
-    boolean interactItems(Item item);
-
+    void interactisWithHero(); //interage com o herói?
+    void interaction(); // CARNE, SWORD, TRAP...
 
 }

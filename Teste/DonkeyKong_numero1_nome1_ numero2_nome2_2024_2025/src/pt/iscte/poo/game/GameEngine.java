@@ -40,9 +40,10 @@ public class GameEngine implements Observer {
 		}
 		int t = ImageGUI.getInstance().getTicks();
 		while (lastTickProcessed < t) {
+			currentRoom.moveGorilla(); //será q é aqui???
+			//fazer metodo que abrange todos tickables
 			processTick();
 		}
-		ImageGUI.getInstance().update();
 	}
 
 
