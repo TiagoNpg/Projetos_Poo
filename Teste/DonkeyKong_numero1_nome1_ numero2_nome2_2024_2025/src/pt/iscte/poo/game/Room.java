@@ -9,10 +9,7 @@ import pt.iscte.poo.utils.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Room {
 	private static final int roomWidth = 10;
@@ -127,12 +124,21 @@ public class Room {
 		}
 	}
 
-	public GameObject getObject (Point2D point) {
+	public Set<GameObject> getObjects (Point2D position) {
+		Set<GameObject> objectsInPosition = new HashSet<>();
 		for(GameObject go : gameObjects){
-			if(go.getPosition().equals(point))
-				return go;
+			if(position.equals(go.getPosition())) {
+				objectsInPosition.add(go);
+			}
+
 		}
-		return null;
+		return objectsInPosition;
+	}
+
+	public void uptadeGame(){
+		List<GameObject> uptdateObjects = new ArrayList<>();
+		//for (GameObject gameObject : gameObjects)
+			//if(gameObject.getPosition())
 	}
 }
 

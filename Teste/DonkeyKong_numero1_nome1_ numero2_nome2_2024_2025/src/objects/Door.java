@@ -2,7 +2,7 @@ package objects;
 
 import pt.iscte.poo.utils.Point2D;
 
-public class Door extends Structure implements Colision {
+public class Door extends Structure implements Interactable {
 //adicionar estado aberta ou fechada
 
     public Door(Point2D position) {

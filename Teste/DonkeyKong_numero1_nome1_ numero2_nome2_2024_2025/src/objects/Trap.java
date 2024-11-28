@@ -2,7 +2,7 @@ package objects;
 
 import pt.iscte.poo.utils.Point2D;
 
-public class Trap extends Structure implements Colision {
+public class Trap extends Structure implements Interactable {
 //adicionar estado activated ou nao
 
     public Trap(Point2D position) {

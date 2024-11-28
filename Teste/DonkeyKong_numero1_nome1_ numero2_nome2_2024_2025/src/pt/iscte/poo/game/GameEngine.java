@@ -32,9 +32,7 @@ public class GameEngine implements Observer {
 
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
-			System.out.println("Keypressed " + k);
 			if (Direction.isDirection(k)) {
-				System.out.println("Direction! ");
 				currentRoom.moveManel(Direction.directionFor(k));
 			}
 		}

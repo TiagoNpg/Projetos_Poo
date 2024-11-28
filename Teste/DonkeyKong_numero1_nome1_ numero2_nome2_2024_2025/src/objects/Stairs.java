@@ -2,7 +2,7 @@ package objects;
 
 import pt.iscte.poo.utils.Point2D;
 
-public class Stairs extends Structure implements Colision{
+public class Stairs extends Structure implements Interactable {
     public Stairs(Point2D position) {
         super("Stairs", position, 0, false, true); // Stairs são "climbable"
     }

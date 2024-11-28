@@ -1,13 +1,8 @@
 package objects;
 
-import pt.iscte.poo.game.GameEngine;
-import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-import java.awt.*;
-import java.util.Random;
-
-public class Gorilla extends Personagem implements Colision, Tickable{
+public class Gorilla extends Personagem implements Interactable, Tickable{
 
     public Gorilla(Point2D position) {
         super("DonkeyKong", position, 1,false);
