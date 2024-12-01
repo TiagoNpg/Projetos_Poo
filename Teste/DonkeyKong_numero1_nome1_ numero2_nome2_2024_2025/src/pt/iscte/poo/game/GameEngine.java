@@ -14,10 +14,18 @@ public class GameEngine implements Observer {
 	private static GameEngine INSTANCE;
 	private int lastTickProcessed = 0;
 	private List<Room> rooms = new ArrayList<>();
-	private Room currentRoom = new Room("rooms/room0.txt");
+	private Room currentRoom; //eliminar caso granel
+	//Caso haja granel
+	//private Room currentRoom = new Room("rooms/room0.txt");
 
 
 	private GameEngine() {
+		//E caso granel
+		loadRooms("rooms/"); // Carrega todas as salas da pasta "rooms/"
+		if (!rooms.isEmpty()) {
+			currentRoom = rooms.get(0); // Define a sala inicial
+		}
+		//E caso granel
 		ImageGUI.getInstance().update();
 	}
 
@@ -49,8 +57,31 @@ public class GameEngine implements Observer {
 		System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
 	}
-
-	public Room getRooms() {
+	//E caso granel
+	public Room getCurrentRoom() {
 		return currentRoom;
 	}
+
+	public void setCurrentRoom(int roomIndex) { //para definir current room!!
+		if (roomIndex >= 0 && roomIndex < rooms.size()) { //intervalo decente
+			currentRoom = rooms.get(roomIndex);
+		}
+	}
+
+	private void loadRooms(String directoryPath) {
+		File directory = new File(directoryPath);
+		if (directory.isDirectory()) {
+			File[] files = directory.listFiles((dir, name) -> name.endsWith(".txt"));
+			if (files != null) {
+				for (File file : files) {
+					rooms.add(new Room(file.getPath()));
+				} //salas carregadas
+			} else { //caso n leia nada
+				System.err.println("Nenhuma sala encontrada em " + directoryPath);
+			}
+		} else { //caminho errado
+			System.err.println("Caminho inválido: " + directoryPath);
+		}
+	}
+	//E caso granel
 }

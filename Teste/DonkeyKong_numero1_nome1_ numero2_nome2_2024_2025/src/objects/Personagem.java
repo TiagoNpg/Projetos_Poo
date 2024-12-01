@@ -16,12 +16,11 @@ public abstract class Personagem extends GameObject{
 
         GameObject nextObject;
 
-
         //FALTA FAZER IFS PARA VERIFICAR STAIRS JUNTAR TUDO PARA EVITAR O CURRENT
         //UTILIZAR APENAS UMA POSIÇÃO
         //IMPLEMENTAR PARA SE MEXER NO FLOOR
 
-        for (GameObject go: GameEngine.getInstance().getRooms().getObjects(nextPos)){
+        for (GameObject go: GameEngine.getInstance().getCurrentRoom().getObjects(nextPos)){
             if(go instanceof Interactable) {
                 nextObject = go;
                 ((Interactable) go).interaction();
