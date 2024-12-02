@@ -6,7 +6,7 @@ public class Trap extends Structure implements Interactable {
 //adicionar estado activated ou nao
 
     public Trap(Point2D position) {
-        super("Trap", position, 2, false, false); //
+        super("Trap", position, 2, true, false); //
     }
 
 
@@ -18,5 +18,11 @@ public class Trap extends Structure implements Interactable {
     @Override
     public void interaction() {
 
+    }
+
+    @Override
+    public void heroStandsOn(Point2D position) {
+        Manel.setHealth(Manel.getHealth() - 20);
+        System.out.println("Standing on trap -20 health, curr health: " + Manel.getHealth());
     }
 }

@@ -6,8 +6,8 @@ public abstract class Item extends GameObject {
 
     private boolean usable;
 
-    public Item(String name, Point2D position, int layer,boolean solid, boolean usable) {
-        super(name, position, layer, solid);
+    public Item(String name, Point2D position, int layer,boolean solid, boolean climbable,boolean usable) {
+        super(name, position, layer, solid, climbable);
         this.usable = usable;
     }
 

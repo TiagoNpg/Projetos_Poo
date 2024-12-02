@@ -19,4 +19,9 @@ public class Door extends Structure implements Interactable {
     public void interaction() {
 
     }
+
+    @Override
+    public void heroStandsOn(Point2D position) {
+        return;
+    }
 }

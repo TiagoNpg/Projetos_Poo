@@ -8,16 +8,22 @@ public abstract class GameObject implements ImageTile {
     private Point2D position;
     private int layer;
     private boolean solid;
+    private boolean climbable;
 
-    public GameObject(String name, Point2D position, int layer, boolean solid) {
+    public GameObject(String name, Point2D position, int layer, boolean solid, boolean climbable) {
         this.name = name;
         this.position = position;
         this.layer = layer;
         this.solid = solid;
+        this.climbable = climbable;
     }
 
     public boolean isSolid() {
         return solid;
+    }
+
+    public boolean isClimbable() {
+        return climbable;
     }
 
     @Override
@@ -38,5 +44,6 @@ public abstract class GameObject implements ImageTile {
     public int getLayer() {
         return layer;
     }
+
 
 }

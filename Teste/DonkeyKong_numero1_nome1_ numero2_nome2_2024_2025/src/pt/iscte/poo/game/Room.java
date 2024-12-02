@@ -106,14 +106,14 @@ public class Room {
 
 	public void moveManel(Direction direction) {
 		if (manel!=null){
-			manel.moveManel(direction);
+			manel.move(direction);
 			ImageGUI.getInstance().update();
 		}
 	}
 
 	public void moveGorilla() {
 		if (gorilla!=null){
-			gorilla.moveGorilla();
+			gorilla.move();
 			ImageGUI.getInstance().update();
 		}
 	}
@@ -124,16 +124,21 @@ public class Room {
 		}
 	}
 
-	public Set<GameObject> getObjects (Point2D position) {
+	public GameObject getObject (Point2D position) {
 		Set<GameObject> objectsInPosition = new HashSet<>();
+		GameObject object = null;
+
 		for(GameObject go : gameObjects){
 			if(position.equals(go.getPosition())) {
+				object = go;
 				objectsInPosition.add(go);
 			}
-
 		}
-		return objectsInPosition;
+		if(objectsInPosition.size() == 1) return object; //DUVIDAS PARA O STOR
+		return objectsInPosition.stream().filter(o -> !(o instanceof Floor)).findFirst().orElse(new Floor(position));
+
 	}
+
 
 	public void uptadeGame(){
 		List<GameObject> uptdateObjects = new ArrayList<>();
