@@ -16,7 +16,7 @@ public class Room {
 	private static final int roomHeight = 10;
 	private String nextRoomFile; // Nome do próximo ficheiro de sala
 	private Manel manel;        // Referência ao jogador
-	private Gorilla gorilla;	//gorilla
+	private Gorilla gorilla;
 	private List<GameObject> gameObjects = new ArrayList<>();
 
 	public Room(String fileName) {
@@ -63,11 +63,13 @@ public class Room {
 						case 'G': // Gorilla
 							gorilla= new Gorilla(position);
 							ImageGUI.getInstance().addImage(gorilla);
+							gameObjects.add(new Floor(position));
 							gameObjects.add(gorilla);
 							break;
 						case 'H': // Hero (Manel)
 							manel = new Manel(position);
 							ImageGUI.getInstance().addImage(manel);
+							gameObjects.add(new Floor(position));
 							gameObjects.add(manel);
 							break;
 						case '0': // Porta para o próximo nível
@@ -83,6 +85,7 @@ public class Room {
 						case 's': // Sword
 							Sword sword = new Sword(position);
 							ImageGUI.getInstance().addImage(sword); // Cria uma espada
+							gameObjects.add(new Floor(position));
 							gameObjects.add(sword);
 							break;
 						case ' '://Floor
@@ -112,9 +115,11 @@ public class Room {
 	}
 
 	public void moveGorilla() {
-		if (gorilla!=null){
-			gorilla.move();
-			ImageGUI.getInstance().update();
+		for(GameObject go : gameObjects){
+			if(go instanceof Gorilla) {
+				((Gorilla) go).move();
+				ImageGUI.getInstance().update();
+			}
 		}
 	}
 
@@ -125,18 +130,16 @@ public class Room {
 	}
 
 	public GameObject getObject (Point2D position) {
-		Set<GameObject> objectsInPosition = new HashSet<>();
-		GameObject object = null;
+		List<GameObject> objectsInPosition = new ArrayList<>();
 
 		for(GameObject go : gameObjects){
 			if(position.equals(go.getPosition())) {
-				object = go;
 				objectsInPosition.add(go);
 			}
 		}
-		if(objectsInPosition.size() == 1) return object; //DUVIDAS PARA O STOR
-		return objectsInPosition.stream().filter(o -> !(o instanceof Floor)).findFirst().orElse(new Floor(position));
-
+		//DUVIDAS PARA O STOR																// talvez com o layer???
+		objectsInPosition.forEach(o -> System.out.println(o.getPosition() + o.getName())); //COMO N UTILIZAR O NEW FLOOR
+		return objectsInPosition.stream().filter(o -> !(o instanceof Manel)).findFirst().orElse(new Floor(position));
 	}
 
 

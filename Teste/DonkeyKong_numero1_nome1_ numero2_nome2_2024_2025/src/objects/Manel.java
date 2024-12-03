@@ -32,20 +32,25 @@ public class Manel extends Personagem {
 		// Verificar se é possível subir ou descer escadas
 
 		if(boundaries(nextPos) && !nextObject.isSolid()) {
-			if (d == Direction.UP && currentObject.isClimbable()) {
-				System.out.println(currentObject.isClimbable());
-				setPosition(nextPos);
+			if (d == Direction.UP) {
+				if(currentObject.isClimbable()){
+					System.out.println(currentObject.isClimbable());
+					setPosition(nextPos);
+					return;
+				}
+				System.out.println("nao e climbable");
 				return;
 			}
-			if (d == Direction.DOWN && nextObject.isClimbable()) {
-				System.out.println(nextObject);
-				setPosition(nextPos);
+			if (d == Direction.DOWN) {
+				if(nextObject.isClimbable()){
+					System.out.println(currentObject.isClimbable());
+					setPosition(nextPos);
+					return;
+				}
 				return;
 			}
-			if (!(currentObject.isClimbable())) {
-				System.out.println("Moving normally to: " + nextPos);
-				setPosition(nextPos);
-			}
+			System.out.println("Moving normally to: " + nextPos);
+			setPosition(nextPos);
 		}
 
 		//Stairs talvez tenha de ser um metodo a parte com o climbable, caso true ent pode, se n n
