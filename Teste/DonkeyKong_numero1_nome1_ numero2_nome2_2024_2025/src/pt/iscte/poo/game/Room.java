@@ -14,9 +14,9 @@ import java.util.*;
 public class Room {
 	private static final int roomWidth = 10;
 	private static final int roomHeight = 10;
-	private String nextRoomFile; // Nome do próximo ficheiro de sala
+	private String nextRoomFile; // PROF DISSE QUE ISTO TINHA QUE N DEVIA DE TAR AQUI
 	private Manel manel;        // Referência ao jogador
-	private Gorilla gorilla;
+	private Gorilla gorilla; //PROF DISSE PARA TIRAR ISTO
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private boolean isDrawn = false; // Indica se a sala já foi desenhada
 
@@ -66,6 +66,7 @@ public class Room {
 			for (int y = 0; y < roomHeight; y++) {
 				for (int x = 0; x < roomWidth; x++) {
 					Point2D position = new Point2D(x, y);
+					gameObjects.add(new Floor(position));
 					ImageGUI.getInstance().addImage(new Floor(position)); // Adiciona o chão
 				}
 			}
@@ -92,13 +93,11 @@ public class Room {
 						case 'G': // Gorilla
 							gorilla= new Gorilla(position);
 							ImageGUI.getInstance().addImage(gorilla);
-							gameObjects.add(new Floor(position));
 							gameObjects.add(gorilla);
 							break;
 						case 'H': // Hero (Manel)
 							manel = new Manel(position);
 							ImageGUI.getInstance().addImage(manel);
-							gameObjects.add(new Floor(position));
 							gameObjects.add(manel);
 							break;
 						case '0': // Porta para o próximo nível
@@ -114,7 +113,6 @@ public class Room {
 						case 's': // Sword
 							Sword sword = new Sword(position);
 							ImageGUI.getInstance().addImage(sword); // Cria uma espada
-							gameObjects.add(new Floor(position));
 							gameObjects.add(sword);
 							break;
 						case ' '://Floor
@@ -158,17 +156,51 @@ public class Room {
 		}
 	}
 
-	public GameObject getObject (Point2D position) {
+	public List<GameObject> getObjectsInPosition(Point2D position) {
 		List<GameObject> objectsInPosition = new ArrayList<>();
+		GameObject floor = null;
 
 		for(GameObject go : gameObjects){
 			if(position.equals(go.getPosition())) {
+//				if (go instanceof Floor) floor = go;
 				objectsInPosition.add(go);
 			}
 		}
 		//DUVIDAS PARA O STOR																// talvez com o layer???
-		objectsInPosition.forEach(o -> System.out.println(o.getPosition() + o.getName())); //COMO N UTILIZAR O NEW FLOOR
-		return objectsInPosition.stream().filter(o -> !(o instanceof Manel)).findFirst().orElse(new Floor(position));
+		//objectsInPosition.forEach(o -> System.out.println(o.getPosition() + o.getName())); //COMO N UTILIZAR O NEW FLOOR
+//		System.out.println(objectsInPosition.stream().filter(o -> !(o instanceof Manel) && !(o instanceof Floor)).findFirst().orElse(floor));
+//		return objectsInPosition.stream().filter(o -> !(o instanceof Manel) && !(o instanceof Floor) ).findFirst().orElse(floor);
+		return objectsInPosition;
+	}
+
+	public GameObject getObjectManel(Point2D position){
+		List<GameObject> gameObjectsInPosition = getObjectsInPosition(position);
+		GameObject floor = null;
+
+		for (GameObject go : gameObjectsInPosition){
+			if(!(go instanceof Manel) && !(go instanceof Floor)){
+				return go;
+			}
+			if (go instanceof Floor) floor = go;
+		}
+		return floor;
+	}
+
+	public GameObject getObjectForGorilla(Point2D position){
+		List<GameObject> gameObjectsInPosition = getObjectsInPosition(position);
+		GameObject floor = null;
+
+		for (GameObject go : gameObjectsInPosition){
+			if(!(go instanceof Floor)){
+				return go;
+			}
+			floor = go;
+		}
+		return floor;
+	}
+
+	public List<GameObject> getGameObjects(){
+		return gameObjects;
 	}
 
 	public void updateGame(){

@@ -8,7 +8,7 @@ import pt.iscte.poo.utils.Point2D;
 public class Manel extends Personagem {
 
 	public Manel(Point2D initialPosition) {
-		super("JumpMan", initialPosition, 1,100,20,false,false);
+		super("JumpMan", initialPosition, 1,100,20,true,false);
 	}
 
 	@Override
@@ -19,15 +19,24 @@ public class Manel extends Personagem {
 
 		Point2D currentPos = getPosition();
 		Point2D nextPos = getPosition().plus(d.asVector());
-		Point2D below = new Point2D(getPosition().getX(), getPosition().getY() - 1);
+		Point2D below = new Point2D(nextPos.getX(), nextPos.getY() + 1);
 
-		GameObject currentObject = room.getObject(currentPos);
-		GameObject nextObject = room.getObject(nextPos);
-		GameObject standingOnObject = room.getObject(below);
+		GameObject currentObject = room.getObjectManel(currentPos);
+		GameObject nextObject = room.getObjectManel(nextPos);
+		GameObject standingOnObject = room.getObjectManel(below);
 
-//		if(standingOnObject instanceof Structure) {					// como esta sempre a verificar n faz sentido ser apenas estrutura
-//			((Structure) standingOnObject).heroStandsOn(nextPos); //definir isto para estar sempre a verificar Aka meter o metodo no GameObject em vez do structure
-//		}
+		if(nextObject instanceof Interactable){
+			((Interactable) nextObject).interaction();
+		}
+
+		if(standingOnObject instanceof Structure) {					// como esta sempre a verificar n faz sentido ser apenas estrutura
+			((Structure) standingOnObject).heroStandsOn(nextPos); //definir isto para estar sempre a verificar Aka meter o metodo no GameObject em vez do structure
+		}
+
+		if(nextObject instanceof Pickable){
+			((Pickable) nextObject).pickedByHero();
+			System.out.println(Manel.getDamage());
+		}
 
 		// Verificar se é possível subir ou descer escadas
 

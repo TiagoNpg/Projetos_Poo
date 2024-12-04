@@ -33,5 +33,13 @@ public abstract class Personagem extends GameObject{
     public static void setHealth(int newHealth){
         health = newHealth;
     }
+
+    public static int getDamage() {
+        return damage;
+    }
+
+    public static void setDamage(int newDamage) {
+        damage = newDamage;
+    }
     //PARA PASSAR POR CIMA DE BURACOS IDEIA PALETE PARA UTILIZAR EM BURACOS OU OUTRA CENA
 }
