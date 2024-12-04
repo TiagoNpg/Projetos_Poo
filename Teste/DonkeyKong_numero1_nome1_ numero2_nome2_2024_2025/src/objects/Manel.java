@@ -15,7 +15,7 @@ public class Manel extends Personagem {
 	public void move(Direction d) {
 
 		GameEngine gameEngine = GameEngine.getInstance();
-		Room room = gameEngine.getRooms();
+		Room room = gameEngine.getCurrentRoom();
 
 		Point2D currentPos = getPosition();
 		Point2D nextPos = getPosition().plus(d.asVector());
@@ -30,6 +30,7 @@ public class Manel extends Personagem {
 //		}
 
 		// Verificar se é possível subir ou descer escadas
+
 
 		if(boundaries(nextPos) && !nextObject.isSolid()) {
 			if (d == Direction.UP) {
@@ -51,6 +52,19 @@ public class Manel extends Personagem {
 			}
 			System.out.println("Moving normally to: " + nextPos);
 			setPosition(nextPos);
+			// Verifica se o próximo objeto é uma porta
+			if (nextObject instanceof Door) {
+				System.out.println("Entrando na porta: " + nextObject);
+
+				// Muda para a próxima sala
+				if (gameEngine.advanceToNextRoom()) {
+					System.out.println("Próxima sala carregada.");
+					return;
+				} else {
+					System.out.println("Não há mais salas. Fim de jogo?");
+					return;
+				}
+			}
 		}
 
 		//Stairs talvez tenha de ser um metodo a parte com o climbable, caso true ent pode, se n n

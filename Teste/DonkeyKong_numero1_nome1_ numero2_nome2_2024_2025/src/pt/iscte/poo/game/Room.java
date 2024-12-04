@@ -18,20 +18,49 @@ public class Room {
 	private Manel manel;        // Referência ao jogador
 	private Gorilla gorilla;
 	private List<GameObject> gameObjects = new ArrayList<>();
+	private boolean isDrawn = false; // Indica se a sala já foi desenhada
 
 	public Room(String fileName) {
 		loadRoom(fileName); // Carrega e desenha a sala inicial
 	}
 
+	public void drawRoom() {
+		if (!isDrawn) {
+			// Atualiza a interface gráfica com os objetos da sala
+			ImageGUI.getInstance().clearImages();
+			for (GameObject obj : gameObjects) {
+				ImageGUI.getInstance().addImage(obj);
+			}
+			ImageGUI.getInstance().update();
+			isDrawn = true; // Marca a sala como desenhada
+		}
+	}
+
 	public void loadRoom(String fileName) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-			// Lê a primeira linha: Número da sala e próximo ficheiro
-			String[] firstLine = reader.readLine().split(";");
-			int roomNumber = Integer.parseInt(firstLine[0].substring(1)); // Ex: "#0" -> 0
-			nextRoomFile = firstLine[1];
+			// Verifica se o arquivo é o room2.txt e pula a primeira linha
+			String firstLine = null;
 
-			// Limpa a interface gráfica para o novo nível
+			// Verifica se o arquivo é room2.txt, e não lê a primeira linha se for
+			if (!fileName.endsWith("room2.txt")){
+				firstLine = reader.readLine();
+				// Verifica se a primeira linha é válida
+				if (firstLine == null || !firstLine.contains(";")) {
+					throw new IllegalArgumentException("Formato inválido na primeira linha do ficheiro: " + fileName);
+				}
+
+				String[] parts = firstLine.split(";");
+				if (parts.length < 2) {
+					throw new IllegalArgumentException("Faltam informações na primeira linha do ficheiro: " + fileName);
+				}
+
+				nextRoomFile = parts[1]; // Armazena o próximo arquivo da sala
+			}
+
+
+			// Limpa a interface gráfica e os objetos carregados
 			ImageGUI.getInstance().clearImages();
+			gameObjects.clear();
 
 			// Preenche a sala inteira com Floor por padrão
 			for (int y = 0; y < roomHeight; y++) {
@@ -142,11 +171,16 @@ public class Room {
 		return objectsInPosition.stream().filter(o -> !(o instanceof Manel)).findFirst().orElse(new Floor(position));
 	}
 
-
-	public void uptadeGame(){
-		List<GameObject> uptdateObjects = new ArrayList<>();
+	public void updateGame(){
+		List<GameObject> updateObjects = new ArrayList<>();
 		//for (GameObject gameObject : gameObjects)
-			//if(gameObject.getPosition())
+		//if(gameObject.getPosition())
+	}
+
+	public void draw() {
+		for (GameObject go : gameObjects) {
+			ImageGUI.getInstance().addImage(go);
+		}
 	}
 }
 
