@@ -14,11 +14,14 @@ import java.util.*;
 public class Room {
 	private static final int roomWidth = 10;
 	private static final int roomHeight = 10;
-	private String nextRoomFile; // PROF DISSE QUE ISTO TINHA QUE N DEVIA DE TAR AQUI
+	private String nextRoomFile; // Nome do próximo ficheiro de sala
 	private Manel manel;        // Referência ao jogador
-	private Gorilla gorilla; //PROF DISSE PARA TIRAR ISTO
+	private Gorilla gorilla;
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private boolean isDrawn = false; // Indica se a sala já foi desenhada
+	private List<GameObject> objectsToRemove = new ArrayList<>();
+	private List<GameObject> pendingAdditions = new ArrayList<>();
+
 
 	public Room(String fileName) {
 		loadRoom(fileName); // Carrega e desenha a sala inicial
@@ -66,7 +69,6 @@ public class Room {
 			for (int y = 0; y < roomHeight; y++) {
 				for (int x = 0; x < roomWidth; x++) {
 					Point2D position = new Point2D(x, y);
-					gameObjects.add(new Floor(position));
 					ImageGUI.getInstance().addImage(new Floor(position)); // Adiciona o chão
 				}
 			}
@@ -90,14 +92,29 @@ public class Room {
 							ImageGUI.getInstance().addImage(stairs);
 							gameObjects.add(stairs);
 							break;
+						//Alteracao meat ************************
+						case 'm': // meat
+							Meat meat = new Meat(position);
+							ImageGUI.getInstance().addImage(meat);
+							gameObjects.add(new Floor(position));
+							gameObjects.add(meat);
+							break;
+						case 'P':// Princesa
+							Princess princesa = new Princess(position);
+							ImageGUI.getInstance().addImage(princesa);
+							gameObjects.add(new Floor(position));
+							gameObjects.add(princesa);
+							break;
 						case 'G': // Gorilla
 							gorilla= new Gorilla(position);
 							ImageGUI.getInstance().addImage(gorilla);
+							gameObjects.add(new Floor(position));
 							gameObjects.add(gorilla);
 							break;
 						case 'H': // Hero (Manel)
 							manel = new Manel(position);
 							ImageGUI.getInstance().addImage(manel);
+							gameObjects.add(new Floor(position));
 							gameObjects.add(manel);
 							break;
 						case '0': // Porta para o próximo nível
@@ -113,6 +130,7 @@ public class Room {
 						case 's': // Sword
 							Sword sword = new Sword(position);
 							ImageGUI.getInstance().addImage(sword); // Cria uma espada
+							gameObjects.add(new Floor(position));
 							gameObjects.add(sword);
 							break;
 						case ' '://Floor
@@ -141,20 +159,11 @@ public class Room {
 		}
 	}
 
-	public void moveGorilla() {
-		for(GameObject go : gameObjects){
-			if(go instanceof Gorilla) {
-				((Gorilla) go).move();
-				ImageGUI.getInstance().update();
-			}
-		}
+	public void addBanana(Banana banana) {
+		pendingAdditions.add(banana);
+		ImageGUI.getInstance().addImage(banana);
 	}
 
-	public void loadNextRoom() {
-		if (nextRoomFile != null) {
-			loadRoom(nextRoomFile); // Carrega a próxima sala
-		}
-	}
 
 	public List<GameObject> getObjectsInPosition(Point2D position) {
 		List<GameObject> objectsInPosition = new ArrayList<>();
@@ -199,20 +208,38 @@ public class Room {
 		return floor;
 	}
 
-	public List<GameObject> getGameObjects(){
-		return gameObjects;
-	}
-
-	public void updateGame(){
-		List<GameObject> updateObjects = new ArrayList<>();
-		//for (GameObject gameObject : gameObjects)
-		//if(gameObject.getPosition())
-	}
-
 	public void draw() {
 		for (GameObject go : gameObjects) {
 			ImageGUI.getInstance().addImage(go);
 		}
 	}
-}
 
+	public List<GameObject> getGameObjects(){
+		return this.gameObjects;
+	}
+
+	public boolean isInsideRoom(Point2D position) { //verificar se posicao esta dentro dos limites da room
+			return position.getX() >= 0 && position.getX() <= roomWidth &&
+					position.getY() >= 0 && position.getY() <= roomHeight;
+	}
+
+	public void addToRemoveQueue(GameObject obj) {
+		objectsToRemove.add(obj);
+	}
+
+	public void processRemovals() { //limpar objetos a remover que foram adicionados ao array removals
+		//nomeadamente bananas que saiam da janela do programa
+		for (GameObject obj : objectsToRemove) {
+			gameObjects.remove(obj);
+			ImageGUI.getInstance().removeImage(obj);
+		}
+		objectsToRemove.clear(); // limpa a fila de remoções
+	}
+
+
+	public void processAdditions() {
+		gameObjects.addAll(pendingAdditions);
+		pendingAdditions.clear();
+	}
+
+}

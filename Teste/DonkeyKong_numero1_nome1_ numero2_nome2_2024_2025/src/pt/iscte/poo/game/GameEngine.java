@@ -1,5 +1,7 @@
 package pt.iscte.poo.game;
 
+import objects.GameObject;
+import objects.Tickable;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
@@ -31,7 +33,6 @@ public class GameEngine implements Observer {
 		ImageGUI.getInstance().update();
 	}
 
-
 	public void setCurrentRoom(int roomIndex) {
 		if (roomIndex >= 0 && roomIndex < rooms.size()) {
 			currentRoom = rooms.get(roomIndex);
@@ -44,26 +45,32 @@ public class GameEngine implements Observer {
 
 	@Override
 	public void update(Observed source) {
-
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
 			if (Direction.isDirection(k)) {
 				currentRoom.moveManel(Direction.directionFor(k));
 			}
 		}
+		// atualizar estado do jogo a cada tick
 		int t = ImageGUI.getInstance().getTicks();
 		while (lastTickProcessed < t) {
-			currentRoom.moveGorilla(); //será q é aqui???
-			//fazer metodo que abrange todos tickables
-			processTick();
-		}
+		processTick();}
 	}
+
 
 	private void processTick() {
+		for (GameObject obj : currentRoom.getGameObjects()) { //correr lista objetos para identificar tickables
+			if (obj instanceof Tickable) {
+				((Tickable) obj).updateTick();
+			}
+		}
+		currentRoom.processAdditions(); //Adiciona os objetos pendentes
+		currentRoom.processRemovals(); // Remove os objetos pendentes
+		ImageGUI.getInstance().update();
 		System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
-	}
 
+	}
 	//E caso granel
 	public Room getCurrentRoom() {
 		return currentRoom;
@@ -97,6 +104,8 @@ public class GameEngine implements Observer {
 		}
 		return false; // Não há mais salas
 	}
+
+
 
 }
 

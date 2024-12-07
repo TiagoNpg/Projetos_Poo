@@ -5,17 +5,14 @@ import pt.iscte.poo.game.Room;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-import java.util.List;
-
-public class Gorilla extends Personagem implements Interactable, Tickable{
+public class Gorilla extends Personagem implements Interactable, Tickable {
 
     public Gorilla(Point2D position) {
-        super("DonkeyKong", position, 1,150,15,true,false);
+        super("DonkeyKong", position, 1, 150, 15, false, false);
     }
 
     @Override
     public void move() {
-
         GameEngine gameEngine = GameEngine.getInstance();
         Room room = gameEngine.getCurrentRoom();
 
@@ -23,7 +20,6 @@ public class Gorilla extends Personagem implements Interactable, Tickable{
         Point2D goRight = getPosition().plus(Direction.RIGHT.asVector());
 
         GameObject nextObject = null;
-
 
         if (Math.random() < 0.5 ) {
             if (boundaries(goLeft)){
@@ -51,6 +47,17 @@ public class Gorilla extends Personagem implements Interactable, Tickable{
 
     }
 
+    @Override
+    public void updateTick() {
+        move();
+        // Probabilidade de 30% para lançar uma banana
+        if (Math.random() < 0.3) {
+            Point2D bananaPosition = getPosition().plus(Direction.DOWN.asVector());
+            Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+            Banana banana = new Banana(bananaPosition);
+            currentRoom.addBanana(banana);
+        }
+    }
 
     @Override
     public void interactisWithHero() {
@@ -64,8 +71,4 @@ public class Gorilla extends Personagem implements Interactable, Tickable{
         System.out.println("Ataquei o macaco " + Gorilla.getHealth());
     }
 
-    @Override
-    public  void updateTick(){
-
-    }
 }
