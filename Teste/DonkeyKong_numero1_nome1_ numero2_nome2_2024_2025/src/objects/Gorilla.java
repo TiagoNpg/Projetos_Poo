@@ -8,7 +8,7 @@ import pt.iscte.poo.utils.Point2D;
 public class Gorilla extends Personagem implements Interactable, Tickable {
 
     public Gorilla(Point2D position) {
-        super("DonkeyKong", position, 1, 150, 15, false, false);
+        super("DonkeyKong", position, 1, 150, 15, true, false);
     }
 
     @Override
@@ -69,6 +69,8 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
     public void interaction() {
         Gorilla.setHealth(getHealth()-Manel.getDamage());
         System.out.println("Ataquei o macaco " + Gorilla.getHealth());
+        if(getHealth() <= 0) // Verifica se o gorila ainda está vivo após o ataque
+            GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this); // Remove o gorila
     }
 
 }

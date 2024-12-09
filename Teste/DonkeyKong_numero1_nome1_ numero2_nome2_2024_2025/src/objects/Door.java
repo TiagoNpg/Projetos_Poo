@@ -1,5 +1,6 @@
 package objects;
 
+import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.utils.Point2D;
 
 public class Door extends Structure implements Interactable {
@@ -17,7 +18,15 @@ public class Door extends Structure implements Interactable {
 
     @Override
     public void interaction() {
-
+        System.out.println("Entrando na porta: ");
+        // Muda para a próxima sala
+        if (GameEngine.getInstance().advanceToNextRoom()) {
+            System.out.println("Próxima sala carregada.");
+            return;
+        } else {
+            System.out.println("Não há mais salas. Fim de jogo?");
+            return;
+        }
     }
 
     @Override

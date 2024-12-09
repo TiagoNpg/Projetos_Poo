@@ -12,4 +12,11 @@ public class Floor extends Structure{
 	public void heroStandsOn(Point2D position) {
 		return; //implementar o gravity
 	}
+
+	// Efeito de gravidade: Se o herói está no ar e há um Floor abaixo
+//		if (belowObject instanceof Floor && (currentObject instanceof Floor)) {
+//			setPosition(below);
+//			System.out.println("Herói caiu devido à gravidade para " + below);
+//			return;
+//		}
 }
