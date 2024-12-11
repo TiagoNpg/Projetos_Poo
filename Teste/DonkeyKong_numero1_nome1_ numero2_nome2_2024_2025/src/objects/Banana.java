@@ -8,11 +8,22 @@ import pt.iscte.poo.utils.Point2D;
 public class Banana extends Item implements Interactable, Tickable {
 
     public Banana(Point2D position) {
-        super("Banana", position, 3, false, false, true);
+        super("Banana", position, 3, false, false, 10);
     }
 
     public void move() {
+        GameEngine gameEngine = GameEngine.getInstance();
+        Room room = gameEngine.getCurrentRoom();
+
+        Point2D current = getPosition();
         Point2D goDown = getPosition().plus(Direction.DOWN.asVector());
+
+        GameObject nextObject = room.getObjectForEnemy(goDown);
+        if(nextObject instanceof Manel) {
+            System.out.println("PIMBA NA BEIÇA");
+            interactsWithHero();
+        }
+
         setPosition(goDown); // Atualiza a posição
     }
 
@@ -33,8 +44,8 @@ public class Banana extends Item implements Interactable, Tickable {
     }
 
     @Override
-    public void interactisWithHero() {
-
+    public void interactsWithHero() {
+        Manel.setHealth(Manel.getHealth() - Banana.getEffectValue());
     }
 
     @Override

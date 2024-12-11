@@ -9,7 +9,7 @@ public class Stairs extends Structure implements Interactable{
     }
 
     @Override
-    public void interactisWithHero() {
+    public void interactsWithHero() {
 
     }
 

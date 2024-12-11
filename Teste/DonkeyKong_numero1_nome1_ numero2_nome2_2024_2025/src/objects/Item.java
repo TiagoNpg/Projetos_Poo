@@ -4,15 +4,14 @@ import pt.iscte.poo.utils.Point2D;
 
 public abstract class Item extends GameObject {
 
-    private boolean usable;
+    private static int effectValue;
 
-    public Item(String name, Point2D position, int layer,boolean solid, boolean climbable,boolean usable) {
+    public Item(String name, Point2D position, int layer,boolean solid, boolean climbable, int effectValue) {
         super(name, position, layer, solid, climbable);
-        this.usable = usable;
+        Item.effectValue = effectValue;
     }
 
-    public boolean isUsable(){
-        return usable;
+    public static int getEffectValue() {
+        return effectValue;
     }
-
 }

@@ -41,5 +41,8 @@ public abstract class Personagem extends GameObject{
     public static void setDamage(int newDamage) {
         damage = newDamage;
     }
-    //PARA PASSAR POR CIMA DE BURACOS IDEIA PALETE PARA UTILIZAR EM BURACOS OU OUTRA CENA
+
+    //implementacao de funcao para quando a vida dos personagens chega a zero
+    public void checkDead(){}
+
 }

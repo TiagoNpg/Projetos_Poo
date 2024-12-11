@@ -62,4 +62,10 @@ public class Manel extends Personagem {
 
 	}
 
+	@Override
+	public void checkDead(){
+		//if (getHealth() <= 0)
+		//implementar screen game over
+	}
+
 }

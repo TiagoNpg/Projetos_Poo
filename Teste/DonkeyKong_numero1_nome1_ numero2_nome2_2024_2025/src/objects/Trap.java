@@ -11,7 +11,7 @@ public class Trap extends Structure implements Interactable {
 
 
     @Override
-    public void interactisWithHero() {
+    public void interactsWithHero() {
         return ;
     }
 

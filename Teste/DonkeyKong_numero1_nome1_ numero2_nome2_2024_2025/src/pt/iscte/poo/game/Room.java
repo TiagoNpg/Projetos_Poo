@@ -133,6 +133,12 @@ public class Room {
 							gameObjects.add(new Floor(position));
 							gameObjects.add(sword);
 							break;
+						case 'B': // Sword
+							Bomb bomb = new Bomb(position);
+							ImageGUI.getInstance().addImage(bomb); // Cria uma espada
+							gameObjects.add(new Floor(position));
+							gameObjects.add(bomb);
+							break;
 						case ' '://Floor
 							Floor floor = new Floor(position);
 							gameObjects.add(floor);
@@ -195,7 +201,7 @@ public class Room {
 		return floor;
 	}
 
-	public GameObject getObjectForGorilla(Point2D position){
+	public GameObject getObjectForEnemy(Point2D position){
 		List<GameObject> gameObjectsInPosition = getObjectsInPosition(position);
 		GameObject floor = null;
 
