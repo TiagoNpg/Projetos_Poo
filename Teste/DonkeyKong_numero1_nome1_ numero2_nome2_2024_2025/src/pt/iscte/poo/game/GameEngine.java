@@ -1,12 +1,14 @@
 package pt.iscte.poo.game;
 
 import objects.GameObject;
+import objects.JumpMan;
 import objects.Tickable;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
 import pt.iscte.poo.utils.Direction;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
@@ -17,6 +19,7 @@ public class GameEngine implements Observer {
 	private int lastTickProcessed = 0;
 	private List<Room> rooms = new ArrayList<>();
 	private Room currentRoom;
+
 
 	public static GameEngine getInstance() {
 		if (INSTANCE == null)
@@ -49,6 +52,9 @@ public class GameEngine implements Observer {
 			int k = ImageGUI.getInstance().keyPressed();
 			if (Direction.isDirection(k)) {
 				currentRoom.moveManel(Direction.directionFor(k));
+			}
+			if(ImageGUI.getInstance().keyPressed() == KeyEvent.VK_B){
+				GameEngine.getInstance().getCurrentRoom().getJumpMan().armBomb();
 			}
 		}
 		// atualizar estado do jogo a cada tick

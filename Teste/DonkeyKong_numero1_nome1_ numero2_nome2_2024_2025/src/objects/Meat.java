@@ -12,15 +12,11 @@ public class Meat extends Item implements Pickable {
 
     @Override
     public void pickedByHero() {
-        Manel.setDamage(Meat.getEffectValue());
+        GameEngine.getInstance().getCurrentRoom().getJumpMan().setDamage(Meat.getEffectValue());
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
     }
 
-    @Override
-    public void pickedByG() {
-
-    }
 
 
 }

@@ -15,7 +15,7 @@ public class Room {
 	private static final int roomWidth = 10;
 	private static final int roomHeight = 10;
 	private String nextRoomFile; // Nome do próximo ficheiro de sala
-	private Manel manel;        // Referência ao jogador
+	private JumpMan jumpMan;        // Referência ao jogador
 	private Gorilla gorilla;
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private boolean isDrawn = false; // Indica se a sala já foi desenhada
@@ -112,10 +112,10 @@ public class Room {
 							gameObjects.add(gorilla);
 							break;
 						case 'H': // Hero (Manel)
-							manel = new Manel(position);
-							ImageGUI.getInstance().addImage(manel);
+							jumpMan = new JumpMan(position);
+							ImageGUI.getInstance().addImage(jumpMan);
 							gameObjects.add(new Floor(position));
-							gameObjects.add(manel);
+							gameObjects.add(jumpMan);
 							break;
 						case '0': // Porta para o próximo nível
 							Door door = new Door(position);
@@ -159,8 +159,8 @@ public class Room {
 	}
 
 	public void moveManel(Direction direction) {
-		if (manel!=null){
-			manel.move(direction);
+		if (jumpMan !=null){
+			jumpMan.move(direction);
 			ImageGUI.getInstance().update();
 		}
 	}
@@ -193,7 +193,7 @@ public class Room {
 		GameObject floor = null;
 
 		for (GameObject go : gameObjectsInPosition){
-			if(!(go instanceof Manel) && !(go instanceof Floor)){
+			if(!(go instanceof JumpMan) && !(go instanceof Floor)){
 				return go;
 			}
 			if (go instanceof Floor) floor = go;
@@ -248,4 +248,7 @@ public class Room {
 		pendingAdditions.clear();
 	}
 
+	public JumpMan getJumpMan() {
+		return jumpMan;
+	}
 }

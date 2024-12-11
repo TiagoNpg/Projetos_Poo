@@ -19,7 +19,7 @@ public class Banana extends Item implements Interactable, Tickable {
         Point2D goDown = getPosition().plus(Direction.DOWN.asVector());
 
         GameObject nextObject = room.getObjectForEnemy(goDown);
-        if(nextObject instanceof Manel) {
+        if(nextObject instanceof JumpMan) {
             System.out.println("PIMBA NA BEIÇA");
             interactsWithHero();
         }
@@ -45,7 +45,7 @@ public class Banana extends Item implements Interactable, Tickable {
 
     @Override
     public void interactsWithHero() {
-        Manel.setHealth(Manel.getHealth() - Banana.getEffectValue());
+        GameEngine.getInstance().getCurrentRoom().getJumpMan().setHealth(GameEngine.getInstance().getCurrentRoom().getJumpMan().getHealth() - Banana.getEffectValue());
     }
 
     @Override

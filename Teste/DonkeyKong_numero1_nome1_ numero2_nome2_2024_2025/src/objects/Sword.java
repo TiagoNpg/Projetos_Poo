@@ -1,7 +1,6 @@
 package objects;
 
 import pt.iscte.poo.game.GameEngine;
-import pt.iscte.poo.game.Room;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Point2D;
 
@@ -14,13 +13,9 @@ public class Sword extends Item implements Pickable{
 
     @Override
     public void pickedByHero() {
-        Manel.setDamage(Sword.getEffectValue());
+        GameEngine.getInstance().getCurrentRoom().getJumpMan().setDamage(Sword.getEffectValue());
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
     }
 
-    @Override
-    public void pickedByG() {
-
-    }
 }

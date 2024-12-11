@@ -25,7 +25,7 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
             if (boundaries(goLeft)){
                 nextObject = room.getObjectForEnemy(goLeft);
 
-                if (!(nextObject instanceof Manel)) {
+                if (!(nextObject instanceof JumpMan)) {
                     setPosition(getPosition().plus(Direction.LEFT.asVector()));
                 }else {
                     interactsWithHero();
@@ -35,7 +35,7 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
             if (boundaries(goRight)){
                 nextObject = room.getObjectForEnemy(goRight);
 
-                if (!(nextObject instanceof Manel)) {
+                if (!(nextObject instanceof JumpMan)) {
                     setPosition(getPosition().plus(Direction.RIGHT.asVector()));
                 }else {
                     interactsWithHero();
@@ -59,14 +59,14 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
 
     @Override
     public void interactsWithHero() {
-        Manel.setHealth(getHealth()-Gorilla.getDamage());
-        System.out.println("Ataquei o heroi " + Manel.getHealth());
+        GameEngine.getInstance().getCurrentRoom().getJumpMan().setHealth(getHealth()-this.getDamage());
+        System.out.println("Ataquei o heroi " + GameEngine.getInstance().getCurrentRoom().getJumpMan().getHealth());
     }
 
     @Override
     public void interaction() {
-        Gorilla.setHealth(getHealth()-Manel.getDamage());
-        System.out.println("Ataquei o macaco " + Gorilla.getHealth());
+        this.setHealth(getHealth()- GameEngine.getInstance().getCurrentRoom().getJumpMan().getDamage());
+        System.out.println("Ataquei o macaco " + this.getHealth());
         if(getHealth() <= 0) // Verifica se o gorila ainda está vivo após o ataque
             GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this); // Remove o gorila
     }

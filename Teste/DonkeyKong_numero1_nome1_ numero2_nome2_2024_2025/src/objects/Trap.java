@@ -1,5 +1,6 @@
 package objects;
 
+import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.utils.Point2D;
 
 public class Trap extends Structure implements Interactable {
@@ -22,7 +23,7 @@ public class Trap extends Structure implements Interactable {
 
     @Override
     public void heroStandsOn(Point2D position) {
-        Manel.setHealth(Manel.getHealth() - 20);
-        System.out.println("Standing on trap -20 health, curr health: " + Manel.getHealth());
+        GameEngine.getInstance().getCurrentRoom().getJumpMan().setHealth(GameEngine.getInstance().getCurrentRoom().getJumpMan().getHealth() - 20);
+        System.out.println("Standing on trap -20 health, curr health: " + GameEngine.getInstance().getCurrentRoom().getJumpMan().getHealth());
     }
 }
