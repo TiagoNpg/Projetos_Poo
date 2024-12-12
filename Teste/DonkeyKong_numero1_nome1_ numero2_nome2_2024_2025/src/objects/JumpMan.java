@@ -6,7 +6,7 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class JumpMan extends Personagem {
+public class JumpMan extends Personagem implements Tickable {
 
 	private int bombs = 0;
 
@@ -69,6 +69,24 @@ public class JumpMan extends Personagem {
 	public void checkDead(){
 		//if (getHealth() <= 0)
 		//implementar screen game over
+	}
+
+	@Override
+	public void updateTick() {
+		GameEngine gameEngine = GameEngine.getInstance();
+		Room room = gameEngine.getCurrentRoom();
+
+		Point2D currentPos = getPosition();
+
+		Point2D below = new Point2D(currentPos.getX(), currentPos.getY() + 1);
+
+
+		GameObject standingOnObject = room.getObjectManel(below);
+
+
+		if(standingOnObject instanceof Floor && room.getObjectManel(below) instanceof Floor){
+			setPosition(getPosition().plus(Direction.DOWN.asVector()));
+		}
 	}
 
 	public void addBombs() {

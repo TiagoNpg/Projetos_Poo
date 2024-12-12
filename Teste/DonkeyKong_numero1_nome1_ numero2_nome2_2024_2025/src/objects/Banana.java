@@ -45,7 +45,7 @@ public class Banana extends Item implements Interactable, Tickable {
 
     @Override
     public void interactsWithHero() {
-        GameEngine.getInstance().getCurrentRoom().getJumpMan().setHealth(GameEngine.getInstance().getCurrentRoom().getJumpMan().getHealth() - Banana.getEffectValue());
+        JumpMan.setHealth(JumpMan.getHealth() - Banana.getEffectValue());
     }
 
     @Override

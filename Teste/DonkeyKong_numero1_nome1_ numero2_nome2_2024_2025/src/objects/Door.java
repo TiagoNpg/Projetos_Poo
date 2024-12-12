@@ -5,13 +5,17 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Door extends Structure implements Interactable {
 
-    private static boolean open;
+    private boolean open;
 
     public Door(Point2D position) {
         super("DoorClosed", position, 0, false, false);
         this.open = false;
     }
 
+    public void openDoor(){
+        this.open = true;
+        this.setName("DoorOpen");
+    }
 
     @Override
     public void interactsWithHero() {
@@ -20,17 +24,11 @@ public class Door extends Structure implements Interactable {
 
     @Override
     public void interaction() {
-        System.out.println("Entrando na porta: ");
         if (this.open){
-            // Muda para a próxima sala
-            if (GameEngine.getInstance().advanceToNextRoom()) {
-                System.out.println("Próxima sala carregada.");
-                return;
-            } else {
-                System.out.println("Não há mais salas. Fim de jogo?");
-                return;
-            }
+            GameEngine.getInstance().advanceToNextRoom();
+            System.out.println("Próxima sala carregada");
         }
+        else { return;}
     }
 
     @Override
@@ -38,7 +36,4 @@ public class Door extends Structure implements Interactable {
         return;
     }
 
-     public static boolean isOpen(){
-        return open;
-     }
 }

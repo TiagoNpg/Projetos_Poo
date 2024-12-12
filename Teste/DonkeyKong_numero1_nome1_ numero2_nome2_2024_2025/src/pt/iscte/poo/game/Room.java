@@ -17,6 +17,8 @@ public class Room {
 	private String nextRoomFile; // Nome do próximo ficheiro de sala
 	private JumpMan jumpMan;        // Referência ao jogador
 	private Gorilla gorilla;
+	private Bat bat;
+	private Key key;
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private boolean isDrawn = false; // Indica se a sala já foi desenhada
 	private List<GameObject> objectsToRemove = new ArrayList<>();
@@ -111,6 +113,12 @@ public class Room {
 							gameObjects.add(new Floor(position));
 							gameObjects.add(gorilla);
 							break;
+						case 'b': // Bat
+							bat = new Bat(position);
+							ImageGUI.getInstance().addImage(bat);
+							gameObjects.add(new Floor(position));
+							gameObjects.add(bat);
+							break;
 						case 'H': // Hero (Manel)
 							jumpMan = new JumpMan(position);
 							ImageGUI.getInstance().addImage(jumpMan);
@@ -133,7 +141,13 @@ public class Room {
 							gameObjects.add(new Floor(position));
 							gameObjects.add(sword);
 							break;
-						case 'B': // Sword
+						case 'k': // Key
+							key = new Key(position);
+							ImageGUI.getInstance().addImage(key);
+							gameObjects.add(new Floor(position));
+							gameObjects.add(key);
+							break;
+						case 'B': // Bomb
 							Bomb bomb = new Bomb(position);
 							ImageGUI.getInstance().addImage(bomb); // Cria uma espada
 							gameObjects.add(new Floor(position));
@@ -251,4 +265,5 @@ public class Room {
 	public JumpMan getJumpMan() {
 		return jumpMan;
 	}
+
 }

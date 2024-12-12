@@ -13,9 +13,13 @@ public class Sword extends Item implements Pickable{
 
     @Override
     public void pickedByHero() {
-        GameEngine.getInstance().getCurrentRoom().getJumpMan().setDamage(Sword.getEffectValue());
+        JumpMan.setDamage(Sword.getEffectValue());
         ImageGUI.getInstance().removeImage(this);
-        GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
+        GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
     }
 
+    @Override
+    public void pickedByG() {
+
+    }
 }

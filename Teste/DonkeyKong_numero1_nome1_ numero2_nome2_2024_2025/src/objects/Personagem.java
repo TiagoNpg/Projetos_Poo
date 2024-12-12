@@ -26,19 +26,19 @@ public abstract class Personagem extends GameObject{
         return true;
     }
 
-    public int getHealth() {
+    public static int getHealth() {
         return health;
     }
 
-    public void setHealth(int newHealth){
+    public static void setHealth(int newHealth){
         health = newHealth;
     }
 
-    public int getDamage() {
+    public static int getDamage() {
         return damage;
     }
 
-    public void setDamage(int newDamage) {
+    public static void setDamage(int newDamage) {
         damage = newDamage;
     }
 

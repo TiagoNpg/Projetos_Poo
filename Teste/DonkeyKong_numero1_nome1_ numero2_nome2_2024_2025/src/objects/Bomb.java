@@ -4,8 +4,6 @@ import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Point2D;
 
-import java.util.List;
-
 public class Bomb extends Item implements Pickable,Tickable{
 
     private boolean isArmed = false;
@@ -24,6 +22,11 @@ public class Bomb extends Item implements Pickable,Tickable{
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
         GameEngine.getInstance().getCurrentRoom().getJumpMan().addBombs();
+    }
+
+    @Override
+    public void pickedByG() {
+        return;
     }
 
     @Override

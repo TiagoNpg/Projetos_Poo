@@ -60,7 +60,7 @@ public class GameEngine implements Observer {
 		// atualizar estado do jogo a cada tick
 		int t = ImageGUI.getInstance().getTicks();
 		while (lastTickProcessed < t) {
-		processTick();}
+			processTick();}
 	}
 
 

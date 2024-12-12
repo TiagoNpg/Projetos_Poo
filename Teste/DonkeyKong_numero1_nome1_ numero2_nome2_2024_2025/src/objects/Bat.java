@@ -6,10 +6,10 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class Gorilla extends Personagem implements Interactable, Tickable {
+public class Bat extends Personagem implements Interactable, Tickable {
 
-    public Gorilla(Point2D position) {
-        super("DonkeyKong", position, 1, 150, 15, true, false);
+    public Bat(Point2D position) {
+        super("Bat", position, 1, 150, 15, true, false);
     }
 
     @Override
@@ -17,66 +17,59 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
         GameEngine gameEngine = GameEngine.getInstance();
         Room room = gameEngine.getCurrentRoom();
 
+        Point2D currentPos = getPosition();
+        Point2D below = new Point2D(currentPos.getX(), currentPos.getY() + 1);
+
         Point2D goLeft = getPosition().plus(Direction.LEFT.asVector());
         Point2D goRight = getPosition().plus(Direction.RIGHT.asVector());
+        Point2D goDown = getPosition().plus(Direction.DOWN.asVector());
 
         GameObject nextObject = null;
 
-        if (Math.random() < 0.5 ) {
-            if (boundaries(goLeft)){
+        if ((room.getObjectForEnemy(below).isClimbable()) || (room.getObjectForEnemy(currentPos).isClimbable())) { //se for climbable, desce
+            nextObject = room.getObjectForEnemy(goDown);
+            if (!(nextObject instanceof JumpMan)) {
+                setPosition(getPosition().plus(Direction.DOWN.asVector()));
+            } else {
+                interactsWithHero();
+            }
+        } else if (Math.random() < 0.5) {
+            if (boundaries(goLeft)) {
                 nextObject = room.getObjectForEnemy(goLeft);
-
                 if (!(nextObject instanceof JumpMan)) {
                     setPosition(getPosition().plus(Direction.LEFT.asVector()));
-                }else {
+                } else {
                     interactsWithHero();
                 }
             }
         } else {
-            if (boundaries(goRight)){
+            if (boundaries(goRight)) {
                 nextObject = room.getObjectForEnemy(goRight);
-
                 if (!(nextObject instanceof JumpMan)) {
                     setPosition(getPosition().plus(Direction.RIGHT.asVector()));
-                }else {
+                } else {
                     interactsWithHero();
                 }
             }
         }
-
     }
 
     @Override
     public void updateTick() {
         move();
-        // Probabilidade de 30% para lançar uma banana
-        if (Math.random() < 0.3) {
-            Point2D bananaPosition = getPosition().plus(Direction.DOWN.asVector());
-            Room currentRoom = GameEngine.getInstance().getCurrentRoom();
-            Banana banana = new Banana(bananaPosition);
-            currentRoom.addBanana(banana);
-        }
     }
 
     @Override
     public void interactsWithHero() {
-        JumpMan.setHealth(getHealth()-Gorilla.getDamage());
+        JumpMan.setHealth(getHealth() - Gorilla.getDamage());
         System.out.println("Ataquei o heroi " + JumpMan.getHealth());
+        ImageGUI.getInstance().removeImage(this);
+        GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
     }
 
     @Override
     public void interaction() {
-        this.setHealth(getHealth()- JumpMan.getDamage());
-        System.out.println("Ataquei o macaco " + this.getHealth());
-        if(getHealth() <= 0) { // Verifica se o gorila ainda está vivo após o ataque
-            ImageGUI.getInstance().removeImage(this);
-            GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);} // Remove o gorila
+        GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this); // Remove o bat
     }
-
-//   @Override
-//   public void checkDead(){
-//        for()
-//
-//    }
 
 }
