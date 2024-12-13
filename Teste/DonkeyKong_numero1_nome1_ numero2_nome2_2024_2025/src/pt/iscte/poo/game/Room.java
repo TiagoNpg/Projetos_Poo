@@ -191,18 +191,12 @@ public class Room {
 
 	public List<GameObject> getObjectsInPosition(Point2D position) {
 		List<GameObject> objectsInPosition = new ArrayList<>();
-		GameObject floor = null;
 
 		for(GameObject go : gameObjects){
 			if(position.equals(go.getPosition())) {
-//				if (go instanceof Floor) floor = go;
 				objectsInPosition.add(go);
 			}
 		}
-		//DUVIDAS PARA O STOR																// talvez com o layer???
-		//objectsInPosition.forEach(o -> System.out.println(o.getPosition() + o.getName())); //COMO N UTILIZAR O NEW FLOOR
-//		System.out.println(objectsInPosition.stream().filter(o -> !(o instanceof Manel) && !(o instanceof Floor)).findFirst().orElse(floor));
-//		return objectsInPosition.stream().filter(o -> !(o instanceof Manel) && !(o instanceof Floor) ).findFirst().orElse(floor);
 		return objectsInPosition;
 	}
 

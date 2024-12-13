@@ -1,25 +1,19 @@
 package objects;
 
+import pt.iscte.poo.game.GameEngine;
+import pt.iscte.poo.game.Room;
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Point2D;
 
-public class Fire extends GameObject implements Interactable, Tickable {
+public class Fire extends GameObject implements Tickable {
 
     public Fire(Point2D position) {
-        super("Fire_old", position, 1, false,false);
-    }
-
-    @Override
-    public void interactsWithHero() {
-        return;
-    }
-
-    @Override
-    public void interaction() {
-        return;
+        super("Fire", position, 0, false,false);
     }
 
     @Override
     public void updateTick() {
-        return;
+        ImageGUI.getInstance().removeImage(this);
+        GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
     }
 }

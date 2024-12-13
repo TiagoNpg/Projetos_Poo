@@ -77,7 +77,7 @@ public class GameEngine implements Observer {
 		lastTickProcessed++;
 
 	}
-	//E caso granel
+
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}

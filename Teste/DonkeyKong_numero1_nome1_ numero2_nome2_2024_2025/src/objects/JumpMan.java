@@ -9,9 +9,12 @@ import pt.iscte.poo.utils.Point2D;
 public class JumpMan extends Personagem implements Tickable {
 
 	private int bombs = 0;
+	private Point2D startPos;
+	private int lives = 3; //3 vidas
 
 	public JumpMan(Point2D initialPosition) {
-		super("JumpMan", initialPosition, 2,100,20,true,false);
+		super("JumpMan", initialPosition, 2,60,20,true,false);
+		this.startPos = initialPosition;
 	}
 
 	@Override
@@ -67,14 +70,24 @@ public class JumpMan extends Personagem implements Tickable {
 
 	@Override
 	public void checkDead(){
-		//if (getHealth() <= 0)
-		//implementar screen game over
+		if (getHealth() <= 0){
+			System.out.println("Morreste!");
+			this.lives--;
+			if (lives > 0){
+				setPosition(startPos);
+				setHealth(60);
+			}
+			else {
+				//game over
+			}
+		}
 	}
 
 	@Override
 	public void updateTick() {
 		GameEngine gameEngine = GameEngine.getInstance();
 		Room room = gameEngine.getCurrentRoom();
+		this.checkDead();
 
 		Point2D currentPos = getPosition();
 
