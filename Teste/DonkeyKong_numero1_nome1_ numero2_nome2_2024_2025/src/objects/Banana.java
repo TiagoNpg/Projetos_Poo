@@ -2,6 +2,7 @@ package objects;
 
 import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.game.Room;
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
@@ -20,8 +21,9 @@ public class Banana extends Item implements Interactable, Tickable {
 
         GameObject nextObject = room.getObjectForEnemy(goDown);
         if(nextObject instanceof JumpMan) {
-            System.out.println("PIMBA NA BEIÇA");
             interactsWithHero();
+            ImageGUI.getInstance().removeImage(this);
+            GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
         }
 
         setPosition(goDown); // Atualiza a posição
@@ -45,11 +47,13 @@ public class Banana extends Item implements Interactable, Tickable {
 
     @Override
     public void interactsWithHero() {
-        JumpMan.setHealth(JumpMan.getHealth() - Banana.getEffectValue());
+        return;
     }
 
     @Override
     public void interaction() {
-        // Deixar vazio ou implementar interação específica
+        JumpMan.setHealth(JumpMan.getHealth() - Banana.getEffectValue());
+        ImageGUI.getInstance().removeImage(this);
+        GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
     }
 }

@@ -89,12 +89,16 @@ public class Room {
 							ImageGUI.getInstance().addImage(wall);
 							gameObjects.add(wall);
 							break;
+						case 'w': // Wall with trap
+							Wall wall_t = new Wall(position, true); //com trap
+							ImageGUI.getInstance().addImage(wall_t);
+							gameObjects.add(wall_t);
+							break;
 						case 'S': // Stairs
 							Stairs stairs = new Stairs(position);
 							ImageGUI.getInstance().addImage(stairs);
 							gameObjects.add(stairs);
 							break;
-						//Alteracao meat ************************
 						case 'm': // meat
 							Meat meat = new Meat(position);
 							ImageGUI.getInstance().addImage(meat);
@@ -179,9 +183,9 @@ public class Room {
 		}
 	}
 
-	public void addBanana(Banana banana) {
-		pendingAdditions.add(banana);
-		ImageGUI.getInstance().addImage(banana);
+	public void addObject(GameObject object) {
+		pendingAdditions.add(object);
+		ImageGUI.getInstance().addImage(object);
 	}
 
 

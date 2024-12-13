@@ -54,7 +54,7 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
             Point2D bananaPosition = getPosition().plus(Direction.DOWN.asVector());
             Room currentRoom = GameEngine.getInstance().getCurrentRoom();
             Banana banana = new Banana(bananaPosition);
-            currentRoom.addBanana(banana);
+            currentRoom.addObject(banana);
         }
     }
 

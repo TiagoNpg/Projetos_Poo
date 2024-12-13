@@ -6,7 +6,7 @@ public class Trap extends Structure implements Interactable {
 //adicionar estado activated ou nao
 
     public Trap(Point2D position) {
-        super("Trap", position, 2, true, false); //
+        super("Trap", position, 1, true, false); //
     }
 
 

@@ -11,7 +11,7 @@ public class JumpMan extends Personagem implements Tickable {
 	private int bombs = 0;
 
 	public JumpMan(Point2D initialPosition) {
-		super("JumpMan", initialPosition, 1,100,20,true,false);
+		super("JumpMan", initialPosition, 2,100,20,true,false);
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class JumpMan extends Personagem implements Tickable {
 			((Interactable) nextObject).interaction();
 		}
 
-		if(standingOnObject instanceof Structure) {					// como esta sempre a verificar n faz sentido ser apenas estrutura
-			((Structure) standingOnObject).heroStandsOn(nextPos); //definir isto para estar sempre a verificar Aka meter o metodo no GameObject em vez do structure
+		if(standingOnObject instanceof Structure) {
+			((Structure) standingOnObject).heroStandsOn(nextPos);
 		}
 
 		if(nextObject instanceof Pickable){
@@ -81,10 +81,10 @@ public class JumpMan extends Personagem implements Tickable {
 		Point2D below = new Point2D(currentPos.getX(), currentPos.getY() + 1);
 
 
-		GameObject standingOnObject = room.getObjectManel(below);
+		GameObject standingOnObject = room.getObjectManel(currentPos);
 
 
-		if(standingOnObject instanceof Floor && room.getObjectManel(below) instanceof Floor){
+		if((standingOnObject instanceof Floor || standingOnObject instanceof Trap) && (room.getObjectManel(below) instanceof Trap || room.getObjectManel(below) instanceof Floor)){
 			setPosition(getPosition().plus(Direction.DOWN.asVector()));
 		}
 	}
