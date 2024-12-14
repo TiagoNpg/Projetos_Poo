@@ -6,20 +6,22 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
+import java.util.List;
+
 public class JumpMan extends Personagem implements Tickable {
 
 	private int bombs = 0;
 	private Point2D startPos;
 	private int lives = 3; //3 vidas
 
+
 	public JumpMan(Point2D initialPosition) {
-		super("JumpMan", initialPosition, 2,60,20,true,false);
+		super("JumpMan", initialPosition, 2,60,20,3, true,false);
 		this.startPos = initialPosition;
 	}
 
 	@Override
 	public void move(Direction d) {
-
 		GameEngine gameEngine = GameEngine.getInstance();
 		Room room = gameEngine.getCurrentRoom();
 
@@ -27,52 +29,52 @@ public class JumpMan extends Personagem implements Tickable {
 		Point2D nextPos = getPosition().plus(d.asVector());
 		Point2D below = new Point2D(nextPos.getX(), nextPos.getY() + 1);
 
-		GameObject currentObject = room.getObjectManel(currentPos);
-		GameObject nextObject = room.getObjectManel(nextPos);
-		GameObject standingOnObject = room.getObjectManel(below);
+		List<GameObject> currentObjects = room.getObjectsInPosition(currentPos);
+		List<GameObject> nextObjects = room.getObjectsInPosition(nextPos);
+		List<GameObject> standingOnObjects = room.getObjectsInPosition(below);
 
-		if(nextObject instanceof Interactable){
-			((Interactable) nextObject).interaction();
+		for (GameObject object : nextObjects) {
+			if (object instanceof Pickable) {
+				((Pickable) object).pickedByHero();
+				setPosition(nextPos);
+				return;}
 		}
 
-		if(standingOnObject instanceof Structure) {
-			((Structure) standingOnObject).heroStandsOn(nextPos);
+		for (GameObject object : nextObjects) {
+			if (object instanceof Interactable) {
+				((Interactable) object).interaction();
+				return;}
 		}
 
-		if(nextObject instanceof Pickable){
-			((Pickable) nextObject).pickedByHero();
+		for (GameObject object : standingOnObjects) {
+			if (object instanceof Structure) {
+				((Structure) object).heroStandsOn(nextPos);}
 		}
 
-		// Verificar se é possível subir ou descer escadas
-
-
-		if(boundaries(nextPos) && !nextObject.isSolid()) {
-			if (d == Direction.UP) {
-				if(currentObject.isClimbable()){
-					setPosition(nextPos);
-					return;
-				}
-				System.out.println("nao e climbable");
-				return;
-			}
-			if (d == Direction.DOWN) {
-				if(nextObject.isClimbable()){
-					setPosition(nextPos);
-					return;
-				}
-				return;
-			}
-			setPosition(nextPos);
+		for (GameObject object : nextObjects) {
+			if (boundaries(nextPos) && !object.isSolid()) {
+				if (d == Direction.UP) {
+					for (GameObject objectCurr : currentObjects) {
+						if (objectCurr.isClimbable()) {
+							setPosition(nextPos);
+							return;}
+					}
+					return;}
+				if (d == Direction.DOWN) {
+					if (object.isClimbable()) {
+						setPosition(nextPos);
+						return;}
+					return;}
+				setPosition(nextPos);
+				return;}
 		}
-		//update dps de atualizar a posição
-
 	}
 
 	@Override
 	public void checkDead(){
 		if (getHealth() <= 0){
 			System.out.println("Morreste!");
-			this.lives--;
+			lives--;
 			if (lives > 0){
 				setPosition(startPos);
 				setHealth(60);
@@ -93,12 +95,15 @@ public class JumpMan extends Personagem implements Tickable {
 
 		Point2D below = new Point2D(currentPos.getX(), currentPos.getY() + 1);
 
+		List<GameObject> currentObjects = room.getObjectsInPosition(currentPos);
+		List<GameObject> standingOnObjects = room.getObjectsInPosition(below);
 
-		GameObject standingOnObject = room.getObjectManel(currentPos);
-
-
-		if((standingOnObject instanceof Floor || standingOnObject instanceof Trap) && (room.getObjectManel(below) instanceof Trap || room.getObjectManel(below) instanceof Floor)){
-			setPosition(getPosition().plus(Direction.DOWN.asVector()));
+		for (GameObject object1 : currentObjects){
+			for (GameObject object2 : standingOnObjects) {
+				if ((object1 instanceof Floor || object1 instanceof Trap) && (object2 instanceof Trap || object2 instanceof Floor)) {
+					setPosition(getPosition().plus(Direction.DOWN.asVector()));
+				}
+			}
 		}
 	}
 
@@ -115,5 +120,10 @@ public class JumpMan extends Personagem implements Tickable {
 			bombs--;
 		}
 	}
+
+	public int getBombs(){
+		return bombs;
+	}
+
 
 }

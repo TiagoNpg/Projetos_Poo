@@ -6,10 +6,12 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
+import java.util.List;
+
 public class Gorilla extends Personagem implements Interactable, Tickable {
 
     public Gorilla(Point2D position) {
-        super("DonkeyKong", position, 1, 150, 15, true, false);
+        super("DonkeyKong", position, 1, 60, 15, 1, true, false);
     }
 
     @Override
@@ -20,30 +22,19 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
         Point2D goLeft = getPosition().plus(Direction.LEFT.asVector());
         Point2D goRight = getPosition().plus(Direction.RIGHT.asVector());
 
-        GameObject nextObject = null;
+        Point2D targetPosition = Math.random() < 0.5 ? goLeft : goRight;
 
-        if (Math.random() < 0.5 ) {
-            if (boundaries(goLeft)){
-                nextObject = room.getObjectForEnemy(goLeft);
+        if (boundaries(targetPosition)) {
+            List<GameObject> nextObjects = room.getObjectsInPosition(targetPosition);
 
-                if (!(nextObject instanceof JumpMan)) {
-                    setPosition(getPosition().plus(Direction.LEFT.asVector()));
-                }else {
+            for (GameObject object : nextObjects) {
+                if (object instanceof JumpMan) {
                     interactsWithHero();
+                    return;
                 }
             }
-        } else {
-            if (boundaries(goRight)){
-                nextObject = room.getObjectForEnemy(goRight);
-
-                if (!(nextObject instanceof JumpMan)) {
-                    setPosition(getPosition().plus(Direction.RIGHT.asVector()));
-                }else {
-                    interactsWithHero();
-                }
-            }
+            setPosition(targetPosition);
         }
-
     }
 
     @Override
@@ -60,13 +51,15 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
 
     @Override
     public void interactsWithHero() {
-        JumpMan.setHealth(getHealth()-Gorilla.getDamage());
-        System.out.println("Ataquei o heroi " + JumpMan.getHealth());
+        Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+        currentRoom.getJumpMan().setHealth(currentRoom.getJumpMan().getHealth() - this.getDamage());
+        System.out.println("Ataquei o heroi " + currentRoom.getJumpMan().getHealth());
     }
 
     @Override
     public void interaction() {
-        this.setHealth(getHealth()- JumpMan.getDamage());
+        Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+        this.setHealth(getHealth()- currentRoom.getJumpMan().getDamage());
         System.out.println("Ataquei o macaco " + this.getHealth());
         if(getHealth() <= 0) { // Verifica se o gorila ainda está vivo após o ataque
             ImageGUI.getInstance().removeImage(this);

@@ -1,9 +1,10 @@
 package objects;
 
+import pt.iscte.poo.game.GameEngine;
+import pt.iscte.poo.game.Room;
 import pt.iscte.poo.utils.Point2D;
 
 public class Trap extends Structure implements Interactable {
-//adicionar estado activated ou nao
 
     public Trap(Point2D position) {
         super("Trap", position, 1, true, false); //
@@ -12,19 +13,18 @@ public class Trap extends Structure implements Interactable {
 
     @Override
     public void interactsWithHero() {
-        JumpMan.setHealth(JumpMan.getHealth() - 20);
-        System.out.println("Vida atual (TRAP! 1)"+ JumpMan.getHealth());
+        return;
     }
 
     @Override
     public void interaction() {
-        JumpMan.setHealth(JumpMan.getHealth() - 20);
-        System.out.println("Vida atual (TRAP! 2)"+ JumpMan.getHealth());
+        return;
     }
 
     @Override
     public void heroStandsOn(Point2D position) {
-        JumpMan.setHealth(JumpMan.getHealth() - 20);
-        System.out.println("Vida atual (TRAP!)"+ JumpMan.getHealth());
+        Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+        JumpMan jumpMan = currentRoom.getJumpMan();
+        jumpMan.setHealth(jumpMan.getHealth() - 20);
     }
 }

@@ -6,13 +6,15 @@ import pt.iscte.poo.utils.Point2D;
 
 public abstract class Personagem extends GameObject{
 
-    private static int health;
-    private static int damage;
+    private int health;
+    private int damage;
+    private int lives;
 
-    public Personagem(String name, Point2D position, int layer,int health,int damage, boolean solid, boolean climbable) {
+    public Personagem(String name, Point2D position, int layer,int health,int damage, int lives, boolean solid, boolean climbable) {
         super(name, position, layer,solid,climbable);
-        Personagem.health = health;
-        Personagem.damage = damage;
+        this.health = health;
+        this.damage = damage;
+        this.lives = lives;
     }
 
     public void move(Direction d) {}
@@ -26,19 +28,21 @@ public abstract class Personagem extends GameObject{
         return true;
     }
 
-    public static int getHealth() {
+    public int getHealth() {
         return health;
     }
 
-    public static void setHealth(int newHealth){
+    public int getLives() { return lives; }
+
+    public void setHealth(int newHealth){
         health = newHealth;
     }
 
-    public static int getDamage() {
+    public int getDamage() {
         return damage;
     }
 
-    public static void setDamage(int newDamage) {
+    public void setDamage(int newDamage) {
         damage = newDamage;
     }
 

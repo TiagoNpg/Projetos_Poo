@@ -47,17 +47,39 @@ public class Banana extends Item implements Interactable, Tickable {
 
     @Override
     public void interactsWithHero() {
-        JumpMan.setHealth(JumpMan.getHealth() - 20);
+        Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+        JumpMan jumpMan = currentRoom.getJumpMan();
+        jumpMan.setHealth(jumpMan.getHealth() - 20);
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
-        System.out.println("Vida atual "+ JumpMan.getHealth());
     }
 
     @Override
     public void interaction() {
-        JumpMan.setHealth(JumpMan.getHealth() - 20);
+        Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+        List<GameObject> objects = currentRoom.getObjectsInPosition(getPosition());
+        JumpMan jumpMan = currentRoom.getJumpMan();
+
+        for (GameObject object : objects) {
+            if (object instanceof JumpMan) {
+                jumpMan.setHealth(jumpMan.getHealth() - 20);
+            }
+        }
+
+        boolean canPlaceJumpMan = true;
+        for (GameObject object : objects) {
+            if (object.isSolid()) {
+                canPlaceJumpMan = false;
+                break;
+            }
+        }
+
+        if (canPlaceJumpMan) {
+            jumpMan.setPosition(this.getPosition());
+            jumpMan.setHealth(jumpMan.getHealth() - 20);
+        }
+
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
-        System.out.println("Vida atual (2): "+ JumpMan.getHealth());
     }
 }

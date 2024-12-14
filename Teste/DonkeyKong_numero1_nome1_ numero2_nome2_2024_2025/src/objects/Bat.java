@@ -6,10 +6,12 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
+import java.util.List;
+
 public class Bat extends Personagem implements Interactable, Tickable {
 
     public Bat(Point2D position) {
-        super("Bat", position, 1, 150, 15, true, false);
+        super("Bat", position, 1, 150, 15, 1, true, false);
     }
 
     @Override
@@ -18,39 +20,41 @@ public class Bat extends Personagem implements Interactable, Tickable {
         Room room = gameEngine.getCurrentRoom();
 
         Point2D currentPos = getPosition();
-        Point2D below = new Point2D(currentPos.getX(), currentPos.getY() + 1);
 
-        Point2D goLeft = getPosition().plus(Direction.LEFT.asVector());
-        Point2D goRight = getPosition().plus(Direction.RIGHT.asVector());
-        Point2D goDown = getPosition().plus(Direction.DOWN.asVector());
+        // Direções possíveis
+        Point2D goLeft = currentPos.plus(Direction.LEFT.asVector());
+        Point2D goRight = currentPos.plus(Direction.RIGHT.asVector());
+        Point2D goDown = currentPos.plus(Direction.DOWN.asVector());
 
-        GameObject nextObject = null;
+        Point2D targetPosition;
 
-        if ((room.getObjectForEnemy(below).isClimbable()) || (room.getObjectForEnemy(currentPos).isClimbable())) { //se for climbable, desce
-            nextObject = room.getObjectForEnemy(goDown);
-            if (!(nextObject instanceof JumpMan)) {
-                setPosition(getPosition().plus(Direction.DOWN.asVector()));
-            } else {
-                interactsWithHero();
-            }
-        } else if (Math.random() < 0.5) {
-            if (boundaries(goLeft)) {
-                nextObject = room.getObjectForEnemy(goLeft);
-                if (!(nextObject instanceof JumpMan)) {
-                    setPosition(getPosition().plus(Direction.LEFT.asVector()));
-                } else {
-                    interactsWithHero();
+        // Prioriza mover para baixo se o próximo objeto for escalável
+        if (boundaries(goDown)) {
+            List<GameObject> objectsDown = room.getObjectsInPosition(goDown);
+            for (GameObject object : objectsDown) {
+                if (object.isClimbable()) {
+                    if (object instanceof JumpMan) {
+                        interactsWithHero();
+                        return;
+                    }
+                    setPosition(goDown);
+                    return;
                 }
             }
-        } else {
-            if (boundaries(goRight)) {
-                nextObject = room.getObjectForEnemy(goRight);
-                if (!(nextObject instanceof JumpMan)) {
-                    setPosition(getPosition().plus(Direction.RIGHT.asVector()));
-                } else {
+        }
+
+        // Escolhe aleatoriamente entre esquerda ou direita
+        targetPosition = Math.random() < 0.5 ? goLeft : goRight;
+
+        if (boundaries(targetPosition)) {
+            List<GameObject> nextObjects = room.getObjectsInPosition(targetPosition);
+            for (GameObject object : nextObjects) {
+                if (object instanceof JumpMan) {
                     interactsWithHero();
+                    return;
                 }
             }
+            setPosition(targetPosition);
         }
     }
 
@@ -61,8 +65,8 @@ public class Bat extends Personagem implements Interactable, Tickable {
 
     @Override
     public void interactsWithHero() {
-        JumpMan.setHealth(getHealth() - Gorilla.getDamage());
-        System.out.println("Ataquei o heroi " + JumpMan.getHealth());
+        Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+        currentRoom.getJumpMan().setHealth(currentRoom.getJumpMan().getHealth() - this.getDamage());
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
     }

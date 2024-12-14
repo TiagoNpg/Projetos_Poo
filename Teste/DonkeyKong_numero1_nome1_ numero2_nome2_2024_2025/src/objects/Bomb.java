@@ -45,17 +45,16 @@ public class Bomb extends Item implements Pickable,Tickable {
 
             for (GameObject go : GameEngine.getInstance().getCurrentRoom().getGameObjects()) { //elimina tudo à volta
                 for (Point2D point : armedPosition.getNeighbourhoodPoints()) {
-                    if (go.getPosition().equals(point) && !(go instanceof JumpMan)){
+                    if (go.getPosition().equals(point) && !(go instanceof JumpMan) && !(go instanceof Stairs) && !(go instanceof Wall)) {
                         ImageGUI.getInstance().removeImage(go);
                         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(go);
                         currentRoom.addObject(new Floor(go.getPosition()));
                         Fire fire = new Fire(go.getPosition());
                         currentRoom.addObject(fire);
                     }
-                }
-                if (go instanceof JumpMan){ //Explode e o heroi está lá
-                    JumpMan.setHealth(JumpMan.getHealth() - 20);
-                    System.out.println("FIRE! BOMB! -20 health, curr health: " + JumpMan.getHealth());
+                    if (go instanceof JumpMan && currentRoom.getJumpMan().getPosition().equals(point)){ //Explode e o heroi está lá
+                        currentRoom.getJumpMan().setHealth(0); //morre
+                    }
                 }
             }
         }

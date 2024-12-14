@@ -20,7 +20,6 @@ public class GameEngine implements Observer {
 	private List<Room> rooms = new ArrayList<>();
 	private Room currentRoom;
 
-
 	public static GameEngine getInstance() {
 		if (INSTANCE == null)
 			INSTANCE = new GameEngine();
@@ -33,7 +32,6 @@ public class GameEngine implements Observer {
 			currentRoom = rooms.get(0); // Define a sala inicial
 			currentRoom.drawRoom(); // Desenha a sala inicial
 		}
-		ImageGUI.getInstance().update();
 	}
 
 	public void setCurrentRoom(int roomIndex) {
@@ -72,10 +70,11 @@ public class GameEngine implements Observer {
 		}
 		currentRoom.processAdditions(); //Adiciona os objetos pendentes
 		currentRoom.processRemovals(); // Remove os objetos pendentes
-		ImageGUI.getInstance().update();
+		ImageGUI gui = ImageGUI.getInstance();
+		gui.update();
 		System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
-
+		gui.setStatusMessage("Good luck!         Lives: "+ currentRoom.getJumpMan().getLives() + "     Health: " + currentRoom.getJumpMan().getHealth() + "     Damage: " + currentRoom.getJumpMan().getDamage() + "     Bombs: " + currentRoom.getJumpMan().getBombs());
 	}
 
 	public Room getCurrentRoom() {

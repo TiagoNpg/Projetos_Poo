@@ -200,32 +200,6 @@ public class Room {
 		return objectsInPosition;
 	}
 
-	public GameObject getObjectManel(Point2D position){
-		List<GameObject> gameObjectsInPosition = getObjectsInPosition(position);
-		GameObject floor = null;
-
-		for (GameObject go : gameObjectsInPosition){
-			if(!(go instanceof JumpMan) && !(go instanceof Floor)){
-				return go;
-			}
-			if (go instanceof Floor) floor = go;
-		}
-		return floor;
-	}
-
-	public GameObject getObjectForEnemy(Point2D position){
-		List<GameObject> gameObjectsInPosition = getObjectsInPosition(position);
-		GameObject floor = null;
-
-		for (GameObject go : gameObjectsInPosition){
-			if(!(go instanceof Floor)){
-				return go;
-			}
-			floor = go;
-		}
-		return floor;
-	}
-
 	public void draw() {
 		for (GameObject go : gameObjects) {
 			ImageGUI.getInstance().addImage(go);
@@ -251,7 +225,7 @@ public class Room {
 			gameObjects.remove(obj);
 			ImageGUI.getInstance().removeImage(obj);
 		}
-		objectsToRemove.clear(); // limpa a fila de remoções
+		objectsToRemove.clear();
 	}
 
 
