@@ -123,6 +123,10 @@ public class GameEngine implements Observer {
 		return false;
 	}
 
+	public int getLastTickProcessed(){
+		return lastTickProcessed;
+	}
+
 
 
 }

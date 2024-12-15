@@ -5,7 +5,7 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.game.Room;
 import pt.iscte.poo.utils.Point2D;
 
-public class Bomb extends Item implements Pickable,Tickable {
+public class Bomb extends Item implements Pickable,Tickable,Interactable {
 
     private boolean isArmed = false;
     private int armed = 5;
@@ -51,6 +51,19 @@ public class Bomb extends Item implements Pickable,Tickable {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void interactsWithHero() {
+
+    }
+
+    @Override
+    public void interaction() {
+        System.out.println("Pisei a bomba");
+        if(isArmed) {
+            armed = 1;
         }
     }
 }
