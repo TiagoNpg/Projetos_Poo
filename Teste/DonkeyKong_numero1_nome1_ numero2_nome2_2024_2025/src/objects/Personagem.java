@@ -34,6 +34,8 @@ public abstract class Personagem extends GameObject{
 
     public int getLives() { return lives; }
 
+    public int updateLives() { return lives--; }
+
     public void setHealth(int newHealth){
         health = newHealth;
     }

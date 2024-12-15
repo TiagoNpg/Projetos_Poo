@@ -32,6 +32,11 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
                     interactsWithHero();
                     return;
                 }
+                if(object instanceof Bomb){
+                    System.out.println("gorilla bomba");
+                    ((Interactable) object).interaction();
+                    return;
+                }
                 if (object.isSolid()) {
                     return;
                 }

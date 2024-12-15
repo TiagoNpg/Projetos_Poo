@@ -22,7 +22,7 @@ public class Princess extends Personagem implements Interactable {
         Scoreboard.getInstance().addScore(finalScore);
         Scoreboard.getInstance().updateScores();
         ImageGUI.getInstance().showMessage("High Scores",Scoreboard.getInstance().top10());
-        ImageGUI.getInstance().clearImages();
+        System.exit(0);
     }
 
 }

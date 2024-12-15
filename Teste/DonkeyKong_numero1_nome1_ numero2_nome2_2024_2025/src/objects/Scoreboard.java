@@ -34,8 +34,6 @@ public class Scoreboard {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        add(score);
-
     }
 
     public void updateScores(){

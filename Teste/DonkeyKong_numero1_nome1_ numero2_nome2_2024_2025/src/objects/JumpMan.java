@@ -12,7 +12,6 @@ public class JumpMan extends Personagem implements Tickable {
 
 	private int bombs = 0;
 	private Point2D startPos;
-	private int lives = 3; //3 vidas
 
 
 	public JumpMan(Point2D initialPosition) {
@@ -77,13 +76,16 @@ public class JumpMan extends Personagem implements Tickable {
 	public void checkDead(){
 		if (getHealth() <= 0){
 			System.out.println("Morreste!");
-			lives--;
-			if (lives > 0){
+			updateLives();
+			if (getLives() > 0){
 				setPosition(startPos);
 				setHealth(60);
 			}
 			else {
-				//game over
+				ImageGUI.getInstance().showMessage("Lost :( ","Get good T.T");
+				Scoreboard.getInstance().updateScores();
+				ImageGUI.getInstance().showMessage("High Scores",Scoreboard.getInstance().top10());
+				System.exit(0);
 			}
 		}
 	}

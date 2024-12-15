@@ -25,6 +25,6 @@ public class Trap extends Structure implements Interactable {
     public void heroStandsOn(Point2D position) {
         Room currentRoom = GameEngine.getInstance().getCurrentRoom();
         JumpMan jumpMan = currentRoom.getJumpMan();
-        jumpMan.setHealth(jumpMan.getHealth() - 20);
+        jumpMan.setHealth(jumpMan.getHealth() - 5);
     }
 }
