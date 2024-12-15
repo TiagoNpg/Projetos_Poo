@@ -1,8 +1,6 @@
 package pt.iscte.poo.game;
 
-import objects.GameObject;
-import objects.JumpMan;
-import objects.Tickable;
+import objects.*;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
@@ -12,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
+import java.util.Scanner;
 
 public class GameEngine implements Observer {
 
@@ -34,25 +33,14 @@ public class GameEngine implements Observer {
 		}
 	}
 
-	public void setCurrentRoom(int roomIndex) {
-		if (roomIndex >= 0 && roomIndex < rooms.size()) {
-			currentRoom = rooms.get(roomIndex);
-			currentRoom.drawRoom(); // Desenha a nova sala
-			System.out.println("Sala atual alterada para: " + roomIndex);
-		} else {
-			System.err.println("Índice de sala inválido!");
-		}
-	}
-
 	@Override
 	public void update(Observed source) {
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
 			if (Direction.isDirection(k)) {
-				currentRoom.moveManel(Direction.directionFor(k));
-			}
-			if(ImageGUI.getInstance().keyPressed() == KeyEvent.VK_B){
-				GameEngine.getInstance().getCurrentRoom().getJumpMan().armBomb();
+				currentRoom.moveManel(Direction.directionFor(k));}
+			if(ImageGUI.getInstance().keyPressed() == KeyEvent.VK_B) {
+						currentRoom.getJumpMan().armBomb();
 			}
 		}
 		// atualizar estado do jogo a cada tick
@@ -68,13 +56,13 @@ public class GameEngine implements Observer {
 				((Tickable) obj).updateTick();
 			}
 		}
-		currentRoom.processAdditions(); //Adiciona os objetos pendentes
-		currentRoom.processRemovals(); // Remove os objetos pendentes
+		currentRoom.processAdditions();
+		currentRoom.processRemovals();
 		ImageGUI gui = ImageGUI.getInstance();
 		gui.update();
 		System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
-		gui.setStatusMessage("Good luck!         Lives: "+ currentRoom.getJumpMan().getLives() + "     Health: " + currentRoom.getJumpMan().getHealth() + "     Damage: " + currentRoom.getJumpMan().getDamage() + "     Bombs: " + currentRoom.getJumpMan().getBombs());
+		gui.setStatusMessage("Good luck!         Lives: "+ currentRoom.getJumpMan().getLives() + "     Health: " + currentRoom.getJumpMan().getHealth() + "     Damage: " + currentRoom.getJumpMan().getDamage() + "     Bombs: " + currentRoom.getJumpMan().numBombs());
 	}
 
 	public Room getCurrentRoom() {
@@ -84,30 +72,55 @@ public class GameEngine implements Observer {
 	private void loadRooms(String directoryPath) {
 		File directory = new File(directoryPath);
 		if (directory.isDirectory()) {
-			File[] files = directory.listFiles((dir, name) -> name.endsWith(".txt"));
-			if (files != null) {
+			File[] files = directory.listFiles((dir, name) -> name.matches("room\\d+\\.txt"));
+			if (files != null && files.length > 0) {
 				for (File file : files) {
 					rooms.add(new Room(file.getPath()));
-				} //salas carregadas
-			} else { //caso n leia nada
-				System.err.println("Nenhuma sala encontrada em " + directoryPath);
+				}
+				System.out.println("Salas carregadas do diretório: " + directoryPath);
+			} else {
+				System.err.println("Nenhuma sala encontrada no diretório: " + directoryPath);
+				promptUserForDirectory();
 			}
-		} else { //caminho errado
+		} else { // Caminho inválido
 			System.err.println("Caminho inválido: " + directoryPath);
+			promptUserForDirectory();
+		}
+	}
+
+	private void promptUserForDirectory() {
+		Scanner scanner = new Scanner(System.in);
+		boolean directoryLoaded = false;
+		while (!directoryLoaded) {
+			System.out.print("Insira o caminho de um diretório válido com ficheiros .txt para configurar as salas: ");
+			String userInput = scanner.nextLine(); // Lê o input do utilizador
+			File directory = new File(userInput);
+			if (directory.isDirectory()) {
+				File[] files = directory.listFiles((dir, name) -> name.endsWith(".txt"));
+				if (files != null && files.length > 0) {
+					for (File file : files) {
+						rooms.add(new Room(file.getPath()));
+					}
+					System.out.println("Salas carregadas do diretório: " + userInput);
+					directoryLoaded = true;
+				} else {
+					System.err.println("O diretório não contém ficheiros .txt. Tente novamente.");
+				}
+			} else {
+				System.err.println("O caminho inserido não é um diretório válido. Tente novamente.");
+			}
 		}
 	}
 
 	public boolean advanceToNextRoom() {
 		int currentRoomIndex = rooms.indexOf(currentRoom);
-		// Verifica se há uma próxima sala no array
 		if (currentRoomIndex + 1 < rooms.size()) {
 			currentRoom = rooms.get(currentRoomIndex + 1);
-			// Limpa e desenha a nova sala
 			ImageGUI.getInstance().clearImages();
 			currentRoom.draw();
-			return true; // Mudança bem-sucedida
+			return true;
 		}
-		return false; // Não há mais salas
+		return false;
 	}
 
 

@@ -26,11 +26,7 @@ public class Key extends Item implements Pickable{
                 ((Door) object).openDoor();
             }
         }
-
     }
 
-    @Override
-    public void pickedByG() {
-    }
 
 }

@@ -34,13 +34,16 @@ public class JumpMan extends Personagem implements Tickable {
 		List<GameObject> standingOnObjects = room.getObjectsInPosition(below);
 
 		for (GameObject object : nextObjects) {
+			if (object.isSolid()) {
+				if (object instanceof Interactable) {
+					((Interactable) object).interaction();
+					return;}
+				return;
+			}
 			if (object instanceof Pickable) {
 				((Pickable) object).pickedByHero();
 				setPosition(nextPos);
 				return;}
-		}
-
-		for (GameObject object : nextObjects) {
 			if (object instanceof Interactable) {
 				((Interactable) object).interaction();
 				return;}
@@ -52,7 +55,7 @@ public class JumpMan extends Personagem implements Tickable {
 		}
 
 		for (GameObject object : nextObjects) {
-			if (boundaries(nextPos) && !object.isSolid()) {
+			if (boundaries(nextPos) && !(object.isSolid())) {
 				if (d == Direction.UP) {
 					for (GameObject objectCurr : currentObjects) {
 						if (objectCurr.isClimbable()) {
@@ -113,15 +116,13 @@ public class JumpMan extends Personagem implements Tickable {
 
 	public void armBomb(){
 		if(bombs > 0) {
-			Bomb bomb = new Bomb(getPosition());
-			ImageGUI.getInstance().addImage(bomb);
-			bomb.setArmed();
-			GameEngine.getInstance().getCurrentRoom().getGameObjects().add(bomb);
+			Bomb bomb = new Bomb(this.getPosition(), true);
+			GameEngine.getInstance().getCurrentRoom().addObject(bomb);
 			bombs--;
 		}
 	}
 
-	public int getBombs(){
+	public int numBombs(){
 		return bombs;
 	}
 

@@ -34,11 +34,6 @@ public class Meat extends Item implements Pickable, Tickable {
     }
 
     @Override
-    public void pickedByG() {
-
-    }
-
-    @Override
     public void updateTick() {
         this.tick--;
         if (this.tick == 0){

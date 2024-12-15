@@ -32,6 +32,9 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
                     interactsWithHero();
                     return;
                 }
+                if (object.isSolid()) {
+                    return;
+                }
             }
             setPosition(targetPosition);
         }
@@ -61,15 +64,9 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
         Room currentRoom = GameEngine.getInstance().getCurrentRoom();
         this.setHealth(getHealth()- currentRoom.getJumpMan().getDamage());
         System.out.println("Ataquei o macaco " + this.getHealth());
-        if(getHealth() <= 0) { // Verifica se o gorila ainda está vivo após o ataque
+        if(getHealth() <= 0) {
             ImageGUI.getInstance().removeImage(this);
-            GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);} // Remove o gorila
+            GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);} // remove o gorila
     }
-
-//   @Override
-//   public void checkDead(){
-//        for()
-//
-//    }
 
 }

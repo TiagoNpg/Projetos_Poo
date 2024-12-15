@@ -22,8 +22,4 @@ public class Sword extends Item implements Pickable{
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
     }
 
-    @Override
-    public void pickedByG() {
-
-    }
 }

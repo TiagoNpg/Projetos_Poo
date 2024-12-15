@@ -15,12 +15,12 @@ public class Room {
 	private static final int roomWidth = 10;
 	private static final int roomHeight = 10;
 	private String nextRoomFile; // Nome do próximo ficheiro de sala
-	private JumpMan jumpMan;        // Referência ao jogador
+	private JumpMan jumpMan;
 	private Gorilla gorilla;
 	private Bat bat;
 	private Key key;
 	private List<GameObject> gameObjects = new ArrayList<>();
-	private boolean isDrawn = false; // Indica se a sala já foi desenhada
+	private boolean isDrawn = false;
 	private List<GameObject> objectsToRemove = new ArrayList<>();
 	private List<GameObject> pendingAdditions = new ArrayList<>();
 
@@ -31,25 +31,20 @@ public class Room {
 
 	public void drawRoom() {
 		if (!isDrawn) {
-			// Atualiza a interface gráfica com os objetos da sala
 			ImageGUI.getInstance().clearImages();
 			for (GameObject obj : gameObjects) {
-				ImageGUI.getInstance().addImage(obj);
-			}
+				ImageGUI.getInstance().addImage(obj);}
 			ImageGUI.getInstance().update();
-			isDrawn = true; // Marca a sala como desenhada
+			isDrawn = true;
 		}
 	}
 
 	public void loadRoom(String fileName) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-			// Verifica se o arquivo é o room2.txt e pula a primeira linha
 			String firstLine = null;
 
-			// Verifica se o arquivo é room2.txt, e não lê a primeira linha se for
 			if (!fileName.endsWith("room2.txt")){
 				firstLine = reader.readLine();
-				// Verifica se a primeira linha é válida
 				if (firstLine == null || !firstLine.contains(";")) {
 					throw new IllegalArgumentException("Formato inválido na primeira linha do ficheiro: " + fileName);
 				}
@@ -58,16 +53,10 @@ public class Room {
 				if (parts.length < 2) {
 					throw new IllegalArgumentException("Faltam informações na primeira linha do ficheiro: " + fileName);
 				}
-
-				nextRoomFile = parts[1]; // Armazena o próximo arquivo da sala
+				nextRoomFile = parts[1];
 			}
-
-
-			// Limpa a interface gráfica e os objetos carregados
 			ImageGUI.getInstance().clearImages();
 			gameObjects.clear();
-
-			// Preenche a sala inteira com Floor por padrão
 			for (int y = 0; y < roomHeight; y++) {
 				for (int x = 0; x < roomWidth; x++) {
 					Point2D position = new Point2D(x, y);
@@ -82,7 +71,6 @@ public class Room {
 					char symbol = line.charAt(x);
 					Point2D position = new Point2D(x, y);
 
-					// Criação dinâmica dos objetos com base nos símbolos
 					switch (symbol) {
 						case 'W': // Wall
 							Wall wall = new Wall(position);
@@ -152,7 +140,7 @@ public class Room {
 							gameObjects.add(key);
 							break;
 						case 'B': // Bomb
-							Bomb bomb = new Bomb(position);
+							Bomb bomb = new Bomb(position, false);
 							ImageGUI.getInstance().addImage(bomb); // Cria uma espada
 							gameObjects.add(new Floor(position));
 							gameObjects.add(bomb);
@@ -168,7 +156,6 @@ public class Room {
 				y++; // Incrementa a linha da grelha
 			}
 
-			// Atualiza a GUI
 			ImageGUI.getInstance().update();
 		} catch (IOException e) {
 			System.err.println("Erro ao carregar o ficheiro: " + fileName);

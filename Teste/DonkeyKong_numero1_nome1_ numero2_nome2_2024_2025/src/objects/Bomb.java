@@ -9,33 +9,27 @@ public class Bomb extends Item implements Pickable,Tickable {
 
     private boolean isArmed = false;
     private int armed = 5;
-    private Point2D armedPosition;
 
-    public Bomb(Point2D position) {
+    public Bomb(Point2D position, boolean isArmed) {
         super("Bomb", position, 1, false, false, 300);
+        this.isArmed = isArmed;
+        if (isArmed) {this.setSolid();}
     }
 
-    public void setArmed() {
-        this.armedPosition = new Point2D(this.getPosition().getX(), this.getPosition().getY());
-        this.isArmed = true;
-    }
 
     @Override
     public void pickedByHero() {
+        GameEngine gameEngine = GameEngine.getInstance();
+        Room room = gameEngine.getCurrentRoom();
         ImageGUI.getInstance().removeImage(this);
-        GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
+        room.addToRemoveQueue(this);
         GameEngine.getInstance().getCurrentRoom().getJumpMan().addBombs();
     }
 
     @Override
-    public void pickedByG() {
-        return;
-    }
-
-    @Override
     public void updateTick() {
-        if (isArmed)
-            System.out.println(armed--);
+        if (isArmed) {
+            System.out.println(armed--);}
         if (armed == 0) {
             Room currentRoom = GameEngine.getInstance().getCurrentRoom();
             ImageGUI.getInstance().removeImage(this);
@@ -44,7 +38,7 @@ public class Bomb extends Item implements Pickable,Tickable {
             currentRoom.addObject(fire_center);
 
             for (GameObject go : GameEngine.getInstance().getCurrentRoom().getGameObjects()) { //elimina tudo à volta
-                for (Point2D point : armedPosition.getNeighbourhoodPoints()) {
+                for (Point2D point : this.getPosition().getNeighbourhoodPoints()) {
                     if (go.getPosition().equals(point) && !(go instanceof JumpMan) && !(go instanceof Stairs) && !(go instanceof Wall)) {
                         ImageGUI.getInstance().removeImage(go);
                         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(go);
@@ -53,7 +47,7 @@ public class Bomb extends Item implements Pickable,Tickable {
                         currentRoom.addObject(fire);
                     }
                     if (go instanceof JumpMan && currentRoom.getJumpMan().getPosition().equals(point)){ //Explode e o heroi está lá
-                        currentRoom.getJumpMan().setHealth(0); //morre
+                        currentRoom.getJumpMan().setHealth(0);
                     }
                 }
             }
