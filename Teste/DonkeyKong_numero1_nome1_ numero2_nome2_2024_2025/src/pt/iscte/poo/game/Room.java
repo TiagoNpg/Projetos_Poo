@@ -8,6 +8,7 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -41,10 +42,14 @@ public class Room {
 	}
 
 	public void loadRoom(String fileName) {
+		while (fileName == null || fileName.isEmpty() || !new File(fileName).exists()) {
+			System.err.println("Ficheiro inválido ou não encontrado: " + fileName);
+			fileName = promptUserForFile();
+		}
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 			String firstLine = null;
 
-			if (!fileName.endsWith("room2.txt")){
+			if (!fileName.endsWith("room2.txt")) {
 				firstLine = reader.readLine();
 				if (firstLine == null || !firstLine.contains(";")) {
 					throw new IllegalArgumentException("Formato inválido na primeira linha do ficheiro: " + fileName);
@@ -67,7 +72,13 @@ public class Room {
 
 			String line;
 			int y = 0; // Linha da grelha
+			boolean missingLine = false; //para testar faltar linha
+
 			while ((line = reader.readLine()) != null) {
+				if (line.length() < roomWidth) { //linha incompleta
+					line = String.format("%-" + roomWidth + "s", line).replace(' ', ' '); //substituir com espaço para depois transformar em chão.
+				}
+
 				for (int x = 0; x < line.length(); x++) {
 					char symbol = line.charAt(x);
 					Point2D position = new Point2D(x, y);
@@ -94,14 +105,14 @@ public class Room {
 							gameObjects.add(new Floor(position));
 							gameObjects.add(meat);
 							break;
-						case 'P':// Princesa
+						case 'P': // Princesa
 							Princess princesa = new Princess(position);
 							ImageGUI.getInstance().addImage(princesa);
 							gameObjects.add(new Floor(position));
 							gameObjects.add(princesa);
 							break;
 						case 'G': // Gorilla
-							gorilla= new Gorilla(position);
+							gorilla = new Gorilla(position);
 							ImageGUI.getInstance().addImage(gorilla);
 							gameObjects.add(new Floor(position));
 							gameObjects.add(gorilla);
@@ -146,22 +157,58 @@ public class Room {
 							gameObjects.add(new Floor(position));
 							gameObjects.add(bomb);
 							break;
-						case ' '://Floor
+						case ' ': // Floor
 							Floor floor = new Floor(position);
 							gameObjects.add(floor);
 							break;
 						default:
+							System.err.println("Caractere desconhecido '" + symbol + "' encontrado na linha " + y + ", coluna " + x + ". Preenchendo com chão.");
+							Floor unknownFloor = new Floor(position);
+							gameObjects.add(unknownFloor);
+							ImageGUI.getInstance().addImage(unknownFloor);
 							break;
 					}
 				}
 				y++; // Incrementa a linha da grelha
+			}
+			// Verificar se todas as linhas foram preenchidas
+			if (y < roomHeight) {
+				missingLine = true;
+			}
+
+			if (missingLine) {
+				System.err.println("Erro: O ficheiro está incompleto. Faltam linhas na definição da sala: " + fileName);
+				ImageGUI.getInstance().dispose(); // Fecha o interface gráfico
+				System.exit(1); // Termina o programa
 			}
 
 			ImageGUI.getInstance().update();
 		} catch (IOException e) {
 			System.err.println("Erro ao carregar o ficheiro: " + fileName);
 			e.printStackTrace();
+			ImageGUI.getInstance().dispose(); // Fecha o interface gráfico
+			System.exit(1); // Termina o programa
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
+			ImageGUI.getInstance().dispose(); // Fecha o interface gráfico
+			System.exit(1); // Termina o programa
 		}
+	}
+
+
+	private String promptUserForFile() {
+		Scanner scanner = new Scanner(System.in);
+		String fileName = null;
+
+		while (fileName == null || fileName.isEmpty() || !new File(fileName).exists()) {
+			System.out.print("Insira o nome de um ficheiro válido (.txt) para carregar o nível: ");
+			fileName = scanner.nextLine();
+
+			if (!new File(fileName).exists()) {
+				System.err.println("Ficheiro não encontrado ou inválido. Tente novamente.");
+			}
+		}
+		return fileName;
 	}
 
 	public void moveManel(Direction direction) {

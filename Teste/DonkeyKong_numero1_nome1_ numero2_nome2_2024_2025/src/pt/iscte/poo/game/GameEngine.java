@@ -69,16 +69,14 @@ public class GameEngine implements Observer {
 		File directory = new File(directoryPath);
 		if (directory.isDirectory()) {
 			File[] files = directory.listFiles((dir, name) -> name.matches("room\\d+\\.txt"));
-			if (files != null && files.length > 0) {
+			if (files != null) {
 				for (File file : files) {
 					rooms.add(new Room(file.getPath()));
 				}
-				System.out.println("Salas carregadas do diretório: " + directoryPath);
-			} else {
-				System.err.println("Nenhuma sala encontrada no diretório: " + directoryPath);
+			} else { //nenhuma sala encontrada
 				promptUserForDirectory();
 			}
-		} else { // Caminho inválido
+		} else { //caminho invalido
 			System.err.println("Caminho inválido: " + directoryPath);
 			promptUserForDirectory();
 		}
@@ -89,7 +87,7 @@ public class GameEngine implements Observer {
 		boolean directoryLoaded = false;
 		while (!directoryLoaded) {
 			System.out.print("Insira o caminho de um diretório válido com ficheiros .txt para configurar as salas: ");
-			String userInput = scanner.nextLine(); // Lê o input do utilizador
+			String userInput = scanner.nextLine();
 			File directory = new File(userInput);
 			if (directory.isDirectory()) {
 				File[] files = directory.listFiles((dir, name) -> name.endsWith(".txt"));
