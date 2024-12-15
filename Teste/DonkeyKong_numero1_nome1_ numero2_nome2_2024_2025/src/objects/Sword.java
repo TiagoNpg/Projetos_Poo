@@ -20,6 +20,7 @@ public class Sword extends Item implements Pickable{
         currentRoom.getJumpMan().setDamage(currentRoom.getJumpMan().getDamage()+effectValue);
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
+        ImageGUI.getInstance().setStatusMessage("Apanhei a ESPADA + 20 de dano");
     }
 
 }

@@ -52,6 +52,7 @@ public class Banana extends Item implements Interactable, Tickable {
         jumpMan.setHealth(jumpMan.getHealth() - 20);
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
+        ImageGUI.getInstance().setStatusMessage("Attacked by banana");
     }
 
     @Override

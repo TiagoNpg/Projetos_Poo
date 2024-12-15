@@ -25,11 +25,14 @@ public class Meat extends Item implements Pickable, Tickable {
             currentRoom.getJumpMan().setDamage(currentRoom.getJumpMan().getDamage() + effectValue);
             ImageGUI.getInstance().removeImage(this);
             GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
+            ImageGUI.getInstance().setStatusMessage("Tastes good ++Dmg");
         }
         else {
             currentRoom.getJumpMan().setDamage(currentRoom.getJumpMan().getDamage() - effectValue);
             ImageGUI.getInstance().removeImage(this);
             GameEngine.getInstance().getCurrentRoom().getGameObjects().remove(this);
+            ImageGUI.getInstance().setStatusMessage("Tastes bad --Dmg");
+
         }
     }
 

@@ -8,7 +8,7 @@ import pt.iscte.poo.utils.Point2D;
 public class Bomb extends Item implements Pickable,Tickable,Interactable {
 
     private boolean isArmed = false;
-    private int armed = 30;
+    private int armed = 5;
 
     public Bomb(Point2D position, boolean isArmed) {
         super("Bomb", position, 1, false, false, 300);

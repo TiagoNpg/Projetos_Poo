@@ -28,17 +28,27 @@ public class Bat extends Personagem implements Interactable, Tickable {
         Point2D targetPosition;
 
         if (boundaries(goDown)) {
+            if (goDown.equals(GameEngine.getInstance().getCurrentRoom().getJumpMan().getPosition())) {
+                interactsWithHero();
+                return;
+            }
+
+            //Verificar Bomba
             List<GameObject> objectsDown = room.getObjectsInPosition(goDown);
             for (GameObject object : objectsDown) {
+                if (object instanceof Bomb) {
+                    ((Interactable) object).interaction();
+                    return;
+                }
+            }
+
+            for (GameObject object : objectsDown) {
                 if (object.isClimbable()) {
-                    if (object instanceof JumpMan) {
-                        interactsWithHero();
-                        return;
-                    }
                     setPosition(goDown);
                     return;
                 }
             }
+
         }
 
         targetPosition = Math.random() < 0.5 ? goLeft : goRight;
@@ -74,6 +84,7 @@ public class Bat extends Personagem implements Interactable, Tickable {
         currentRoom.getJumpMan().setHealth(currentRoom.getJumpMan().getHealth() - this.getDamage());
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
+        ImageGUI.getInstance().setStatusMessage("Attacked by bat");
     }
 
     @Override

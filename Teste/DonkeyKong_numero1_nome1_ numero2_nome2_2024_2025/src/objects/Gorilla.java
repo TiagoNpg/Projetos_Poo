@@ -24,6 +24,13 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
 
         Point2D targetPosition = Math.random() < 0.5 ? goLeft : goRight;
 
+        if(GameEngine.getInstance().getCurrentRoomIndex() == 2){
+            if(getPosition().getX() - GameEngine.getInstance().getCurrentRoom().getJumpMan().getPosition().getX() <= 0)
+            targetPosition = goRight;
+            else
+                targetPosition = goLeft;
+        }
+
         if (boundaries(targetPosition)) {
             List<GameObject> nextObjects = room.getObjectsInPosition(targetPosition);
 
@@ -33,7 +40,6 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
                     return;
                 }
                 if(object instanceof Bomb){
-                    System.out.println("gorilla bomba");
                     ((Interactable) object).interaction();
                     return;
                 }
@@ -62,6 +68,7 @@ public class Gorilla extends Personagem implements Interactable, Tickable {
         Room currentRoom = GameEngine.getInstance().getCurrentRoom();
         currentRoom.getJumpMan().setHealth(currentRoom.getJumpMan().getHealth() - this.getDamage());
         System.out.println("Ataquei o heroi " + currentRoom.getJumpMan().getHealth());
+        ImageGUI.getInstance().setStatusMessage("Attacked by gorilla");
     }
 
     @Override

@@ -20,6 +20,7 @@ public class Key extends Item implements Pickable{
         Room room = gameEngine.getCurrentRoom();
         ImageGUI.getInstance().removeImage(this);
         GameEngine.getInstance().getCurrentRoom().addToRemoveQueue(this);
+        ImageGUI.getInstance().setStatusMessage("PORTA DESBLOQUEADA");
         List<GameObject> objects = room.getGameObjects();
         for (GameObject object : objects) {
             if (object instanceof Door){

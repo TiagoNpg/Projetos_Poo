@@ -2,6 +2,7 @@ package objects;
 
 import pt.iscte.poo.game.GameEngine;
 import pt.iscte.poo.game.Room;
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Point2D;
 
 public class Trap extends Structure implements Interactable {
@@ -26,5 +27,6 @@ public class Trap extends Structure implements Interactable {
         Room currentRoom = GameEngine.getInstance().getCurrentRoom();
         JumpMan jumpMan = currentRoom.getJumpMan();
         jumpMan.setHealth(jumpMan.getHealth() - 5);
+        ImageGUI.getInstance().setStatusMessage("Pisei a trap -5 de vida");
     }
 }

@@ -65,10 +65,6 @@ public class GameEngine implements Observer {
 		gui.setStatusMessage("Good luck!         Lives: "+ currentRoom.getJumpMan().getLives() + "     Health: " + currentRoom.getJumpMan().getHealth() + "     Damage: " + currentRoom.getJumpMan().getDamage() + "     Bombs: " + currentRoom.getJumpMan().numBombs());
 	}
 
-	public Room getCurrentRoom() {
-		return currentRoom;
-	}
-
 	private void loadRooms(String directoryPath) {
 		File directory = new File(directoryPath);
 		if (directory.isDirectory()) {
@@ -121,6 +117,14 @@ public class GameEngine implements Observer {
 			return true;
 		}
 		return false;
+	}
+
+	public Room getCurrentRoom() {
+		return currentRoom;
+	}
+
+	public int getCurrentRoomIndex(){
+		return rooms.indexOf(currentRoom);
 	}
 
 	public int getLastTickProcessed(){
