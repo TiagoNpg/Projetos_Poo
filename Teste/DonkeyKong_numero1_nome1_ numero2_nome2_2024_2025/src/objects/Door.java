@@ -28,7 +28,6 @@ public class Door extends Structure implements Interactable {
             GameEngine.getInstance().advanceToNextRoom();
             System.out.println("Próxima sala carregada");
         }
-        else { return;}
     }
 
     @Override

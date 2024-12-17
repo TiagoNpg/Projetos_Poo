@@ -162,36 +162,36 @@ public class Room {
 							gameObjects.add(floor);
 							break;
 						default:
-							System.err.println("Caractere desconhecido '" + symbol + "' encontrado na linha " + y + ", coluna " + x + ". Preenchendo com chão.");
+							System.err.println("Caracter desconhecido '" + symbol + "' encontrado na linha " + y + ", coluna " + x + ". Preencher com chão.");
 							Floor unknownFloor = new Floor(position);
 							gameObjects.add(unknownFloor);
 							ImageGUI.getInstance().addImage(unknownFloor);
 							break;
 					}
 				}
-				y++; // Incrementa a linha da grelha
+				y++;
 			}
-			// Verificar se todas as linhas foram preenchidas
+
 			if (y < roomHeight) {
 				missingLine = true;
 			}
 
 			if (missingLine) {
 				System.err.println("Erro: O ficheiro está incompleto. Faltam linhas na definição da sala: " + fileName);
-				ImageGUI.getInstance().dispose(); // Fecha o interface gráfico
-				System.exit(1); // Termina o programa
+				ImageGUI.getInstance().dispose();
+				System.exit(1);
 			}
 
 			ImageGUI.getInstance().update();
 		} catch (IOException e) {
 			System.err.println("Erro ao carregar o ficheiro: " + fileName);
 			e.printStackTrace();
-			ImageGUI.getInstance().dispose(); // Fecha o interface gráfico
-			System.exit(1); // Termina o programa
+			ImageGUI.getInstance().dispose();
+			System.exit(1);
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
-			ImageGUI.getInstance().dispose(); // Fecha o interface gráfico
-			System.exit(1); // Termina o programa
+			ImageGUI.getInstance().dispose();
+			System.exit(1);
 		}
 	}
 

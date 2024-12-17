@@ -61,7 +61,6 @@ public class Bat extends Personagem implements Interactable, Tickable {
                     return;
                 }
                 if(object instanceof Bomb){
-                    System.out.println("gorilla bomba");
                     ((Interactable) object).interaction();
                     return;
                 }

@@ -9,7 +9,7 @@ public abstract class GameObject implements ImageTile {
     private int layer;
     private boolean solid;
     private boolean climbable;
-    private boolean isArmed;
+
 
     public GameObject(String name, Point2D position, int layer, boolean solid, boolean climbable) {
         this.name = name;
@@ -52,8 +52,5 @@ public abstract class GameObject implements ImageTile {
         return layer;
     }
 
-    public void setArmed(){
-        isArmed = true;
-    }
 
 }

@@ -28,8 +28,8 @@ public class GameEngine implements Observer {
 	private GameEngine() {
 		loadRooms("rooms/"); // Carrega todas as salas da pasta "rooms/"
 		if (!rooms.isEmpty()) {
-			currentRoom = rooms.get(0); // Define a sala inicial
-			currentRoom.drawRoom(); // Desenha a sala inicial
+			currentRoom = rooms.get(0);
+			currentRoom.drawRoom();
 		}
 	}
 
